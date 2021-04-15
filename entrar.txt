@@ -1,0 +1,3 @@
+psql -h localhost -U lanca Project
+pass
+\dt
