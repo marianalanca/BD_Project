@@ -4,6 +4,8 @@
 from flask import Flask, request, redirect, jsonify, session
 import psycopg2
 from config import config
+import string
+import random
 
 PORT = 8080
 
@@ -17,35 +19,43 @@ cur = conn.cursor()
 userIDs =  {}
 
 INSERT_USER = """ INSERT INTO auction_user VALUES (%s, %s) """
+SELECT_AUCTIONS = " SELECT id, description FROM auction "
+INSERT_AUCTION = " INSERT INTO auction(title, description, id, biddding) VALUES (%s, %s, %s, %.2f) " # MAL!!!
 
 # request.get_json() -> GET DATA
 # instalar docker
 
-@app.route('/user', methods=['GET', 'POST', 'PUT'])
+def generate_EAN():
+    letters = string.digits
+    return ''.join(random.choice(letters) for i in range(13))
+
+@app.route('/user', methods=['POST', 'PUT'])
 def user():
     if request.method == 'POST': # {“username”: username, “password”:password} -> mudar para também receber mail
         return insert_auction_user(**request.get_json())
-    elif request.method == 'GET':
-        return 'GET'
     else:
-        return 'PUT'
+        return autentication_auction_user(**request.get_json())
     return
 
 @app.route('/leilao', methods=['POST'])
 def leilao():
-    return request.get_json()
+    args = request.get_json()
+    if args!=None and len(args)==4:
+        return create_auction(**args)
+    return {"erro":"Wrong number of arguments"}
 
-@app.route('/leilao/<leilaoId>', methods=['GET'])
+@app.route('/leilao/<leilaoId>', methods=['GET','PUT'])
 def leiloes_k(leilaoId):
-    return f'leilao {leilaoId}'
-
-@app.route('/leilao/<leilaoId>', methods=['PUT'])
-def leilao_edit():
-    return 'leilao edit'
+    return
 
 @app.route('/leiloes' , methods=['GET'])
 def leiloes():
-    return 'leiloes'
+    cur.execute(SELECT_AUCTIONS)
+    auctions = cur.fetchone()
+    conn.commit()
+    if auctions == None:
+        return {}
+    return auctions # DOESN'T WORK
 
 @app.route('/licitar/<leilaoId>/<licitacao>', methods=['GET'])
 def licitar(leilaoId, licitacao):
@@ -63,15 +73,26 @@ def insert_auction_user(username, password):
         return {"erro": '{m}'.format(m = str(e))}
 
 def autentication_auction_user(username, password):
-    #try :
     sql = """ SELECT username, password  FROM auction_user where username=%s"""
     cur.execute(sql, (username,))
     try:
         if password!=cur.fetchone()[1]:
-            print('Wrong password')
+            return 'Wrong password'
     except:
-       print('Wrong username')
-    return
+       return 'Wrong username'
+    return "Successful authentication"
+
+def create_auction(artigoId, precoMinimo, titulo, descricao): # pode receber outros argumentos
+    try:
+        print (precoMinimo)
+        insert = f" INSERT INTO auction (title, description, id, bidding, auction_user_username) VALUES ('{titulo}', '{descricao}', '{artigoId}', {precoMinimo}, 'DEBUG')" # CHANGE
+        print(insert)
+        cur.execute(insert)
+        conn.commit()
+        return {"leilaoId": "coisa"}
+    except Exception as e:
+        return {"erro": '{m}'.format(m = str(e))}
+
 
 if __name__ == '__main__':
     try :

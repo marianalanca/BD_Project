@@ -16,13 +16,13 @@ def create_tables():
             description		 text NOT NULL,
             id			 text UNIQUE NOT NULL,
             finish_date		 DATE,
-            biddding		 DOUBLE PRECISION NOT NULL,
+            bidding		 FLOAT NOT NULL,
             auction_user_username text NOT NULL,
             PRIMARY KEY(id)
         )
         """,
         """ CREATE TABLE bidding (
-            price		 DOUBLE PRECISION NOT NULL,
+            price		 FLOAT NOT NULL,
             finish_date		 DATE,
             auction_id		 text,
             auction_user_username text,
