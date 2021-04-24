@@ -1,7 +1,0 @@
-psql -h localhost -U lanca project
-pass
-\dt
-
-
-set FLASK_APP=start.py
-flask run
