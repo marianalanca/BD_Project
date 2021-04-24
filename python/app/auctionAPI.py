@@ -7,6 +7,7 @@
 from flask import Flask, request, redirect, jsonify, session
 import psycopg2, logging
 from config import config
+from datetime import datetime
 # import jwt
 
 app = Flask(__name__)
@@ -31,9 +32,9 @@ def user():
 @app.route('/leilao', methods=['POST'])
 def leilao():
     args = request.get_json()
-    if args!=None and len(args)==4:
+    if args!=None and len(args)==5:
         return create_auction(**args)
-    return {"erro":"Wrong number of arguments"}
+    return {"erro": "Wrong number of arguments"}
 
 @app.route('/leilao/<leilaoId>', methods=['GET','PUT'])
 def leiloes_k(leilaoId):
@@ -86,19 +87,30 @@ def autentication_auction_user(username, password):
     cur.close()
     return "Successful authentication"
 
-def create_auction(artigoId, precoMinimo, titulo, descricao): # pode receber outros argumentos
+def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
+
     try:
         conn = db_connection()
-        # create a cursor
         cur = conn.cursor()
-        insert = f" INSERT INTO auction (title, description, id, bidding, auction_user_username) VALUES ('{titulo}', '{descricao}', '{artigoId}', {precoMinimo}, 'DEBUG')" # CHANGE
-        print(insert)
-        cur.execute(insert)
+
+        date = datetime.strptime(data_de_fim, '%m/%d/%Y')
+        today = datetime.now()
+        if today > date:
+            return {"erro": 'Data incorreta'}  # colocar data default?
+
+        # username = session['token']
+        username = "username"  # colocar session!!!!
+        insert = """ INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username) 
+                VALUES (%s, %s, %s, %s, %s, %s)"""
+        values = (titulo, descricao, artigoId, precoMinimo, date, username)
+        cur.execute(insert, values)
+
         conn.commit()
         cur.close()
-        return {"leilaoId": "coisa"}
+        return {"leilaoId": artigoId}
+
     except Exception as e:
-        return {"erro": '{m}'.format(m = str(e))}
+        return {"erro": '{m}'.format(m=str(e))}
 
 def db_connection():
     db = psycopg2.connect(**params)
