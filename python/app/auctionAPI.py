@@ -4,6 +4,7 @@
 # https://flask.palletsprojects.com/en/1.1.x/quickstart/
 # https://www.psycopg.org/docs/usage.html
 
+
 from flask import Flask, request, redirect, jsonify, session
 import psycopg2, logging
 from config import config

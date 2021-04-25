@@ -91,3 +91,4 @@ API v1.0 online: http://localhost:8080/
 
 WARNING:werkzeug: * Debugger is active!
 INFO:werkzeug: * Debugger PIN: 748-607-916
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
