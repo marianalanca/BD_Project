@@ -84,3 +84,10 @@ API v1.0 online: http://localhost:8080/
 
 WARNING:werkzeug: * Debugger is active!
 INFO:werkzeug: * Debugger PIN: 248-710-260
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 748-607-916
