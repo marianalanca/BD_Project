@@ -9,7 +9,7 @@ from flask import Flask, request, redirect, jsonify, session
 import psycopg2, logging
 from config import config
 from datetime import datetime
-# import jwt
+import jwt
 
 app = Flask(__name__)
 app.debug = True
