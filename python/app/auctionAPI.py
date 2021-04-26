@@ -31,7 +31,6 @@ DIV = "\n---------------------------------------------------------------\n"
 # SQL COMMANDS
 INSERT_USER = """ INSERT INTO auction_user VALUES (%s, %s) RETURNING username """
 SELECT_AUCTIONS = " SELECT id, description FROM auction "
-INSERT_AUCTION = " INSERT INTO auction(title, description, id, biddding) VALUES (%s, %s, %s, %.2f) "
 SELECT_USERDATA = """ SELECT username, password  FROM auction_user where username=%s"""
 SELECT_USER = """ SELECT username  FROM auction_user where username=%s"""
 
@@ -70,15 +69,23 @@ def leiloes_k(leilaoId):
 def leiloes():
     try:
         if (authenticate(request.args['token'])):
-            conn = db_connection()
-            cur = conn.cursor()
-            cur.execute(SELECT_AUCTIONS)
-            auctions = cur.fetchone()
-            conn.commit()
-            cur.close()
-            if auctions == None:
-                return jsonify([])
-            return jsonify([auctions])
+            try:
+                conn = db_connection()
+                cur = conn.cursor()
+                cur.execute(SELECT_AUCTIONS)
+                auctionsDB = cur.fetchall()
+                conn.commit()
+                cur.close()
+                if auctionsDB == None:
+                    return jsonify([])
+                # passar para json
+                auctions = []
+                for auction in auctionsDB:
+                    auctions.append({"leilaoId": auction[0], "descricao": auction[1]})
+
+                return jsonify(auctions)
+            except:
+                return {"error":"Something went wrong"}
         else:
             return {"error": "Invalid authentication"}
     except:
@@ -88,14 +95,14 @@ def leiloes():
 def licitar(leilaoId, licitacao):
     try:
         if (authenticate(request.args['token'])):
-            return f'leilao {leilaoId}'
+            return bid(leilaoId, licitacao, decode(request.args['token']))
         else:
             return {"error": "Invalid authentication"}
     except:
         return {"error": "Invalid authentication"}
 
 # TODO
-@app.route('/licitar/messageBox', methods=['GET'])
+@app.route('/messageBox', methods=['GET'])
 def message():
     try:
         if (authenticate(request.args['token'])):
@@ -105,50 +112,6 @@ def message():
     except:
         return {"error": "Invalid authentication"}
 
-# ! DEBUG
-'''
-@app.route('/DEBUG/token', methods=['GET'])
-def token():
-    try:
-        if authenticate(request.args['token']):
-            return {"hey": "oi"}
-        return {"error": "Need to login"}
-    except:
-        log("ERROR: Need to Login")
-        return {"error": "Need to Login"}
-'''
-# FUNCTIONALITIES
-
-def insert_auction_user(username, password):
-    try :
-        conn = db_connection()
-        # create a cursor
-        cur = conn.cursor()
-        cur.execute(INSERT_USER, (username, password,))
-        new_id = cur.fetchone()[0]
-        conn.commit()
-        logger.info(f'{DIV}User {new_id} created successfuly\n')
-        return {"userId": new_id}
-    except Exception as e:
-        error = '{m}'.format(m = str(e))
-        logger.error(f'{DIV}{error}\n')
-        return {"erro": error}
-    finally:
-        cur.close()
-
-def autentication_auction_user(username, password):
-    try:
-        if match_password(username, password):
-            encoded = encode(username)
-            session['authToken'] = encoded
-            logger.info(f'{DIV}Authentication token generated\n{encoded}\n')
-            return {"authToken": encoded}
-        logger.error(f'{DIV}Wrong data\n')
-        return {"error": "Wrong data"}  # return json_response({'message': 'Wrong credentials'}, status=400)
-    except Exception as e:
-        error = '{m}'.format(m=str(e))
-        logger.error(f'{DIV}{error}\n')
-        return {"erro": error}
 
 def match_password(username, password):
     conn = db_connection()
@@ -200,6 +163,39 @@ def authenticate(auth_token):
         return False
     return False
 
+# FUNCTIONALITIES
+
+def insert_auction_user(username, password):
+    try :
+        conn = db_connection()
+        # create a cursor
+        cur = conn.cursor()
+        cur.execute(INSERT_USER, (username, password,))
+        new_id = cur.fetchone()[0]
+        conn.commit()
+        logger.info(f'{DIV}User {new_id} created successfuly\n')
+        return {"userId": new_id}
+    except Exception as e:
+        error = '{m}'.format(m = str(e))
+        logger.error(f'{DIV}{error}\n')
+        return {"erro": error}
+    finally:
+        cur.close()
+
+def autentication_auction_user(username, password):
+    try:
+        if match_password(username, password):
+            encoded = encode(username)
+            session['authToken'] = encoded
+            logger.info(f'{DIV}Authentication token generated\n{encoded}\n')
+            return {"authToken": encoded}
+        logger.error(f'{DIV}Wrong data\n')
+        return {"error": "Wrong data"}  # return json_response({'message': 'Wrong credentials'}, status=400)
+    except Exception as e:
+        error = '{m}'.format(m=str(e))
+        logger.error(f'{DIV}{error}\n')
+        return {"erro": error}
+
 def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
     try:
         conn = db_connection()
@@ -219,7 +215,7 @@ def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
         if today > date:
             return {"erro": 'Data incorreta'}  # colocar data default?
 
-        insert = """ INSERT INTO auction (title, description, id, biddding, finish_date, auction_user_username) 
+        insert = """ INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
                 VALUES (%s, %s, %s, %s, %s, %s)"""
         values = (titulo, descricao, artigoId, precoMinimo, date, username)
         cur.execute(insert, values)
@@ -230,6 +226,61 @@ def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
 
     except Exception as e:
         return {"erro": '{m}'.format(m=str(e))}
+
+# TODO FINISH
+def bid(auctionID, bidValue, username):
+    try:
+        conn = db_connection()
+        cur = conn.cursor()
+
+        select_auction = """ SELECT bidding, finish_date FROM auction where id=%s"""
+
+        cur.execute(select_auction, (auctionID,))
+
+        auction = cur.fetchall()
+
+        if auction == None:
+            logger.error('Auction ID does not exist')
+            return {"erro": 'Auction ID does not exist'}
+
+        # TODO adicionar parte de adicionar biding à lista de bids
+
+        bid_date = datetime.datetime.now()
+        # logger.info(bid_date)
+        '''try:
+            if bid_date > auction[0][1]: # and
+                logger.error('The auction has already closed')
+                return {"error": "The auction has already closed"}
+        except:
+            logger.error('Could not convert date to right format')
+            return {"error": "Could not convert date to right format"}
+        '''
+
+        try:
+            if int(bidValue) <= int(auction[0][0]):
+                logger.error('Bid value is too low')
+                return {"error": "Bid value is too low"}
+        except:
+            logger.error('Could not convert price to int')
+            return {"erro": 'Could not convert price to int'}
+
+        select_auction = """ UPDATE auction SET bidding=%s WHERE id=%s"""
+        cur.execute(select_auction, (bidValue, auctionID,))
+
+        # HERE
+
+        insert_bidding = """ INSERT INTO bidding VALUES (%s, %s) WHERE id=%s"""
+
+        # ! DÁ ERRO
+        #cur.execute(insert_bidding, (bidValue, bid_date, auctionID,))
+
+        conn.commit()
+        logger.info('Successful bid')
+        return {"Status": "Successful bid"}
+    except Exception as e:
+        return {"erro": '{m}'.format(m=str(e))}
+    finally:
+        cur.close()
 
 # DB CONNECTION
 def db_connection():
