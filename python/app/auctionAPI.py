@@ -25,24 +25,26 @@ app.secret_key = 'key'
 params = config()
 JWT_SECRET = 'secret'
 JWT_ALGORITHM = 'HS256'
-#JWT_EXP_DELTA_SECONDS = 20
 
 # SQL COMMANDS
 INSERT_USER = """ INSERT INTO auction_user VALUES (%s, %s) """
 SELECT_AUCTIONS = " SELECT id, description FROM auction "
 INSERT_AUCTION = " INSERT INTO auction(title, description, id, biddding) VALUES (%s, %s, %s, %.2f) "
-SELECT_USER = """ SELECT username, password  FROM auction_user where username=%s"""
+SELECT_USERDATA = """ SELECT username, password  FROM auction_user where username=%s"""
+SELECT_USER = """ SELECT username  FROM auction_user where username=%s"""
 
 # FLASK METHODS
 
+# {“username”: username, “password”:password}
+# TODO MELHORAR
 @app.route('/user', methods=['POST', 'PUT'])
 def user():
-    if(request.get_json()!=None):
-        if request.method == 'POST': # {“username”: username, “password”:password} -> mudar para também receber mail
+    if(request.get_json()!=None and len(request.get_json())==2):  # testar também se os argumentos são os corretos
+        if request.method == 'POST':
             return insert_auction_user(**request.get_json())
         else:
             return autentication_auction_user(**request.get_json()) # fazer verificação
-    return {"bye": "bye"}
+    return {"erro": "Wrong arguments"}
 
 @app.route('/leilao', methods=['POST'])
 def leilao():
@@ -55,27 +57,47 @@ def leilao():
 def leiloes_k(leilaoId):
     return
 
+# * TEM UM EXEMPLO DE AUTENTICAÇÃO!
+# TODO CORRIGIR UM ERRO
+# TODO APRESENTAR UM ARRAY!
 @app.route('/leiloes' , methods=['GET'])
 def leiloes():
-    conn = db_connection()
-    # create a cursor
-    cur = conn.cursor()
-    cur.execute(SELECT_AUCTIONS)
-    auctions = cur.fetchone()
-    conn.commit()
-    cur.close()
-    if auctions == None:
-        return {}
-    return auctions # DOESN'T WORK
+    try:
+        if (authenticate(request.args['token'])):
+            conn = db_connection()
+            cur = conn.cursor()
+            cur.execute(SELECT_AUCTIONS)
+            auctions = cur.fetchone()
+            conn.commit()
+            cur.close()
+            if auctions == None:
+                return {}
+            return auctions # DOESN'T WORK
+        else:
+            return {"error": "Invalid authentication"}
+    except:
+        return {"error": "Invalid authentication"}
 
 @app.route('/licitar/<leilaoId>/<licitacao>', methods=['GET'])
 def licitar(leilaoId, licitacao):
     return f'leilao {leilaoId}'
 
+@app.route('/licitar/messageBox', methods=['GET'])
+def message():
+    return
 
-# FUNCTIONS
+# ! DEBUG
+@app.route('/DEBUG/token', methods=['GET'])
+def token():
+    try:
+        if authenticate(request.args['token']):
+            return {"hey": "oi"}
+        return {"error": "Need to login"}
+    except:
+        return {"error": "Need to login"}
 
-# ? done
+# FUNCTIONALITIES
+
 def insert_auction_user(username, password):
     try :
         conn = db_connection()
@@ -89,27 +111,20 @@ def insert_auction_user(username, password):
     except Exception as e:
         return {"erro": '{m}'.format(m = str(e))}
 
-# TODO
 def autentication_auction_user(username, password):
-    if match_password(username, password):
-        payload = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=90),
-            'iat': datetime.datetime.utcnow(),
-            'sub': username
-        }
-        encoded = jwt.encode(
-            payload,
-            JWT_SECRET,
-            algorithm=JWT_ALGORITHM
-        )
-        session['authToken'] = encoded
-        return {"auth": encoded}
-    return {"error": "Wrong data"}
+    try:
+        if match_password(username, password):
+            encoded = encode(username)
+            session['authToken'] = encoded
+            return {"authToken": encoded}
+        return {"error": "Wrong data"}  # return json_response({'message': 'Wrong credentials'}, status=400)
+    except Exception as e:
+        return {"erro": '{m}'.format(m=str(e))}
 
 def match_password(username, password):
     conn = db_connection()
     cur = conn.cursor()
-    cur.execute(SELECT_USER, (username,))
+    cur.execute(SELECT_USERDATA, (username,))
     try:
         if password!=cur.fetchone()[1]:
             cur.close()
@@ -120,8 +135,43 @@ def match_password(username, password):
     cur.close()
     return True
 
-def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
+# * HERE
+def find_user(username):
+    try:
+        conn = db_connection()
+        cur = conn.cursor()
+        cur.execute(SELECT_USERDATA, (username,))
+        #cur.close()
+        return jsonify(cur.fetchone()[1])
+    except:
+        return {}
 
+def decode(encoded):
+    return jwt.decode(encoded, JWT_SECRET, JWT_ALGORITHM)['sub']
+
+def encode(value):
+    payload = {
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=90),
+        'iat': datetime.datetime.utcnow(),
+        'sub': value
+    }
+    return jwt.encode(
+        payload,
+        JWT_SECRET,
+        algorithm=JWT_ALGORITHM
+    )
+
+# authenticate(request.args['token'])
+def authenticate(auth_token):
+    try:
+        auth_token = request.args['token']
+        if find_user(decode(auth_token)):
+            return True
+    except:
+        return False
+    return False
+
+def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
     try:
         conn = db_connection()
         cur = conn.cursor()
@@ -145,12 +195,12 @@ def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
     except Exception as e:
         return {"erro": '{m}'.format(m=str(e))}
 
-# * DONE
+# DB CONNECTION
 def db_connection():
     db = psycopg2.connect(**params)
     return db
 
-# * DONE
+# MAIN
 if __name__ == "__main__":
 
     # Set up the logging
