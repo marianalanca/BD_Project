@@ -26,6 +26,8 @@ params = config()
 JWT_SECRET = 'secret'
 JWT_ALGORITHM = 'HS256'
 
+DIV = "\n---------------------------------------------------------------\n"
+
 # SQL COMMANDS
 INSERT_USER = """ INSERT INTO auction_user VALUES (%s, %s) """
 SELECT_AUCTIONS = " SELECT id, description FROM auction "
@@ -39,11 +41,13 @@ SELECT_USER = """ SELECT username  FROM auction_user where username=%s"""
 # TODO MELHORAR
 @app.route('/user', methods=['POST', 'PUT'])
 def user():
-    if(request.get_json()!=None and len(request.get_json())==2):  # testar também se os argumentos são os corretos
+    req = request.get_json()
+    if(request.get_json()!=None and len(req)==2 and ('username' in req.keys()) and ('password' in req.keys())):
         if request.method == 'POST':
-            return insert_auction_user(**request.get_json())
+            return insert_auction_user(**req)
         else:
-            return autentication_auction_user(**request.get_json()) # fazer verificação
+            return autentication_auction_user(**req) # fazer verificação
+    logger.error(f'{DIV}Wrong Arguments\n')
     return {"erro": "Wrong arguments"}
 
 @app.route('/leilao', methods=['POST'])
@@ -58,8 +62,7 @@ def leiloes_k(leilaoId):
     return
 
 # * TEM UM EXEMPLO DE AUTENTICAÇÃO!
-# TODO CORRIGIR UM ERRO
-# TODO APRESENTAR UM ARRAY!
+# TODO
 @app.route('/leiloes' , methods=['GET'])
 def leiloes():
     try:
@@ -71,8 +74,8 @@ def leiloes():
             conn.commit()
             cur.close()
             if auctions == None:
-                return {}
-            return auctions # DOESN'T WORK
+                return jsonify([])
+            return jsonify([auctions])
         else:
             return {"error": "Invalid authentication"}
     except:
@@ -82,6 +85,7 @@ def leiloes():
 def licitar(leilaoId, licitacao):
     return f'leilao {leilaoId}'
 
+# TODO
 @app.route('/licitar/messageBox', methods=['GET'])
 def message():
     return
@@ -94,9 +98,12 @@ def token():
             return {"hey": "oi"}
         return {"error": "Need to login"}
     except:
-        return {"error": "Need to login"}
+        log("ERROR: Need to Login")
+        return {"error": "Need to Login"}
 
 # FUNCTIONALITIES
+
+# fazer log:  logger.info("\nclosed\n\n")
 
 def insert_auction_user(username, password):
     try :
@@ -106,20 +113,28 @@ def insert_auction_user(username, password):
         cur.execute(INSERT_USER, (username, password,))
         conn.commit()
         new_id = cur.fetchone()[0]
-        cur.close()
+        logger.info(f'{DIV}User {new_id} created successfuly\n')
         return {"userId": new_id}
     except Exception as e:
-        return {"erro": '{m}'.format(m = str(e))}
+        error = '{m}'.format(m = str(e))
+        logger.error(f'{DIV}{error}\n')
+        return {"erro": error}
+    finally:
+        cur.close()
 
 def autentication_auction_user(username, password):
     try:
         if match_password(username, password):
             encoded = encode(username)
             session['authToken'] = encoded
+            logger.info(f'{DIV}Authentication token generated\n{encoded}\n')
             return {"authToken": encoded}
+        logger.error(f'{DIV}Wrong data\n')
         return {"error": "Wrong data"}  # return json_response({'message': 'Wrong credentials'}, status=400)
     except Exception as e:
-        return {"erro": '{m}'.format(m=str(e))}
+        error = '{m}'.format(m=str(e))
+        logger.error(f'{DIV}{error}\n')
+        return {"erro": error}
 
 def match_password(username, password):
     conn = db_connection()
@@ -135,16 +150,16 @@ def match_password(username, password):
     cur.close()
     return True
 
-# * HERE
 def find_user(username):
     try:
         conn = db_connection()
         cur = conn.cursor()
         cur.execute(SELECT_USERDATA, (username,))
-        #cur.close()
         return jsonify(cur.fetchone()[1])
     except:
         return {}
+    finally:
+        cur.close()
 
 def decode(encoded):
     return jwt.decode(encoded, JWT_SECRET, JWT_ALGORITHM)['sub']
@@ -219,8 +234,7 @@ if __name__ == "__main__":
 
 
 
-    logger.info("\n---------------------------------------------------------------\n" + 
-                  "API v1.0 online: http://localhost:8080/\n\n")
+    logger.info(DIV + "API v1.0 online: http://localhost:8080/\n\n")
 
 
     app.run(host="0.0.0.0", debug=True, threaded=True)
