@@ -1599,3 +1599,176 @@ API v1.0 online: http://localhost:8080/
 
 WARNING:werkzeug: * Debugger is active!
 INFO:werkzeug: * Debugger PIN: 271-136-801
+ERROR:logger:
+---------------------------------------------------------------
+Wrong Arguments
+
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 14:18:42] "[37mPOST /user HTTP/1.1[0m" 200 -
+ERROR:logger:
+---------------------------------------------------------------
+duplicate key value violates unique constraint "auction_user_pkey"
+DETAIL:  Key (username)=(sername) already exists.
+
+
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 14:18:46] "[37mPOST /user HTTP/1.1[0m" 200 -
+ERROR:logger:
+---------------------------------------------------------------
+duplicate key value violates unique constraint "auction_user_pkey"
+DETAIL:  Key (username)=(username) already exists.
+
+
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 14:19:05] "[37mPOST /user HTTP/1.1[0m" 200 -
+INFO:logger:
+---------------------------------------------------------------
+Authentication token generated
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk0NTI0NTgsImlhdCI6MTYxOTQ0NzA1OCwic3ViIjoidXNlcm5hbWUifQ.B5RUbr33uNCc1hsoJJZxPfz4S4OLmlMrvzi6u1VANjw
+
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 14:24:18] "[37mPUT /user HTTP/1.1[0m" 200 -
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 14:24:33] "[31m[1mPUT /leiloes HTTP/1.1[0m" 405 -
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 14:24:36] "[37mGET /leiloes HTTP/1.1[0m" 200 -
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 14:24:46] "[37mGET /leiloes?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk0NTI0NTgsImlhdCI6MTYxOTQ0NzA1OCwic3ViIjoidXNlcm5hbWUifQ.B5RUbr33uNCc1hsoJJZxPfz4S4OLmlMrvzi6u1VANjw HTTP/1.1[0m" 200 -
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 14:25:09] "[37mGET /leiloes?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk0NTI0NTgsImlhdCI6MTYxOTQ0NzA1OCwic3ViIjoidXNlcm5hbWUifQ.B5RUbr33uNCc1hsoJJZxPfz4S4OLmlMrvzi6u1VANjw HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801
+ERROR:logger:
+---------------------------------------------------------------
+duplicate key value violates unique constraint "auction_user_pkey"
+DETAIL:  Key (username)=(username) already exists.
+
+
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 15:02:15] "[37mPOST /user HTTP/1.1[0m" 200 -
+ERROR:logger:
+---------------------------------------------------------------
+no results to fetch
+
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 15:02:19] "[37mPOST /user HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801
+ERROR:logger:
+---------------------------------------------------------------
+duplicate key value violates unique constraint "auction_user_pkey"
+DETAIL:  Key (username)=(usname) already exists.
+
+
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 15:04:22] "[37mPOST /user HTTP/1.1[0m" 200 -
+INFO:logger:
+---------------------------------------------------------------
+User uame created successfuly
+
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 15:04:26] "[37mPOST /user HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 271-136-801

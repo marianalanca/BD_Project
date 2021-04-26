@@ -23,13 +23,13 @@ app = Flask(__name__)
 app.debug = True
 app.secret_key = 'key'
 params = config()
+
 JWT_SECRET = 'secret'
 JWT_ALGORITHM = 'HS256'
-
 DIV = "\n---------------------------------------------------------------\n"
 
 # SQL COMMANDS
-INSERT_USER = """ INSERT INTO auction_user VALUES (%s, %s) """
+INSERT_USER = """ INSERT INTO auction_user VALUES (%s, %s) RETURNING username """
 SELECT_AUCTIONS = " SELECT id, description FROM auction "
 INSERT_AUCTION = " INSERT INTO auction(title, description, id, biddding) VALUES (%s, %s, %s, %.2f) "
 SELECT_USERDATA = """ SELECT username, password  FROM auction_user where username=%s"""
@@ -37,8 +37,6 @@ SELECT_USER = """ SELECT username  FROM auction_user where username=%s"""
 
 # FLASK METHODS
 
-# {“username”: username, “password”:password}
-# TODO MELHORAR
 @app.route('/user', methods=['POST', 'PUT'])
 def user():
     req = request.get_json()
@@ -59,10 +57,15 @@ def leilao():
 
 @app.route('/leilao/<leilaoId>', methods=['GET','PUT'])
 def leiloes_k(leilaoId):
-    return
+    try:
+        if (authenticate(request.args['token'])):
+            return
+        else:
+            return {"error": "Invalid authentication"}
+    except:
+        return {"error": "Invalid authentication"}
 
-# * TEM UM EXEMPLO DE AUTENTICAÇÃO!
-# TODO
+# TODO TEST
 @app.route('/leiloes' , methods=['GET'])
 def leiloes():
     try:
@@ -83,14 +86,27 @@ def leiloes():
 
 @app.route('/licitar/<leilaoId>/<licitacao>', methods=['GET'])
 def licitar(leilaoId, licitacao):
-    return f'leilao {leilaoId}'
+    try:
+        if (authenticate(request.args['token'])):
+            return f'leilao {leilaoId}'
+        else:
+            return {"error": "Invalid authentication"}
+    except:
+        return {"error": "Invalid authentication"}
 
 # TODO
 @app.route('/licitar/messageBox', methods=['GET'])
 def message():
-    return
+    try:
+        if (authenticate(request.args['token'])):
+            return
+        else:
+            return {"error": "Invalid authentication"}
+    except:
+        return {"error": "Invalid authentication"}
 
 # ! DEBUG
+'''
 @app.route('/DEBUG/token', methods=['GET'])
 def token():
     try:
@@ -100,10 +116,8 @@ def token():
     except:
         log("ERROR: Need to Login")
         return {"error": "Need to Login"}
-
+'''
 # FUNCTIONALITIES
-
-# fazer log:  logger.info("\nclosed\n\n")
 
 def insert_auction_user(username, password):
     try :
@@ -111,8 +125,8 @@ def insert_auction_user(username, password):
         # create a cursor
         cur = conn.cursor()
         cur.execute(INSERT_USER, (username, password,))
-        conn.commit()
         new_id = cur.fetchone()[0]
+        conn.commit()
         logger.info(f'{DIV}User {new_id} created successfuly\n')
         return {"userId": new_id}
     except Exception as e:
@@ -198,7 +212,7 @@ def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
 
         # username = session['token']
         username = "username"  # colocar session!!!!
-        insert = """ INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username) 
+        insert = """ INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
                 VALUES (%s, %s, %s, %s, %s, %s)"""
         values = (titulo, descricao, artigoId, precoMinimo, date, username)
         cur.execute(insert, values)
@@ -234,7 +248,7 @@ if __name__ == "__main__":
 
 
 
-    logger.info(DIV + "API v1.0 online: http://localhost:8080/\n\n")
+    logger.info(DIV + "API v1.0 online: http://localhost:8080/\n")
 
 
     app.run(host="0.0.0.0", debug=True, threaded=True)

@@ -19,7 +19,7 @@ CREATE TABLE auction (
 	description		 varchar(512) NOT NULL,
 	id			 varchar(512) UNIQUE NOT NULL,
 	finish_date		 DATE,
-	biddding		 FLOAT(8) NOT NULL,
+	bidding		 FLOAT(8) NOT NULL,
 	auction_user_username varchar(512) NOT NULL,
 	PRIMARY KEY(id)
 );
