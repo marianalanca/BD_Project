@@ -176,14 +176,21 @@ def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
         conn = db_connection()
         cur = conn.cursor()
 
-        date = datetime.strptime(data_de_fim, '%m/%d/%Y')
-        today = datetime.now()
+        try:
+            if (authenticate(request.args['token'])):
+                print()
+                username = decode(request.args['token'])
+            else:
+                return {"error": "Invalid token"}
+        except:
+            return {"error": "Invalid token"}
+
+        date = datetime.datetime.strptime(data_de_fim, '%m/%d/%Y')
+        today = datetime.datetime.now()
         if today > date:
             return {"erro": 'Data incorreta'}  # colocar data default?
 
-        # username = session['token']
-        username = "username"  # colocar session!!!!
-        insert = """ INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username) 
+        insert = """ INSERT INTO auction (title, description, id, biddding, finish_date, auction_user_username) 
                 VALUES (%s, %s, %s, %s, %s, %s)"""
         values = (titulo, descricao, artigoId, precoMinimo, date, username)
         cur.execute(insert, values)
