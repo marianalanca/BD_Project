@@ -33,6 +33,8 @@ INSERT_USER = """ INSERT INTO auction_user VALUES (%s, %s) RETURNING username ""
 SELECT_AUCTIONS = " SELECT id, description FROM auction "
 SELECT_USERDATA = """ SELECT username, password  FROM auction_user where username=%s"""
 SELECT_USER = """ SELECT username  FROM auction_user where username=%s"""
+INSERT_AUCTION = """ INSERT INTO auction (title, description, id, biddding, finish_date, auction_user_username) 
+                VALUES (%s, %s, %s, %s, %s, %s)"""
 
 # FLASK METHODS
 
@@ -46,6 +48,7 @@ def user():
             return autenticationAuctionUser(**req) # fazer verificação
     logger.error(f'{DIV}Wrong Arguments\n')
     return {"erro": "Wrong arguments"}
+
 
 @app.route('/leilao', methods=['POST'])
 def leilao():
@@ -61,8 +64,8 @@ def leiloes_k(leilaoId):
     # recebe as coisas e vê se as chaves contêm as coisas esperadas
     try:
         if (authenticate(request.args['token'])):
-            if request.method == 'POST':
-                return
+            if request.method == 'GET':
+                return consult_auction(leilaoId)
             else:  # PUT
                 return# changeDetails(leilaoId, request.get_json())  # ! dá erro!
         else:
@@ -70,7 +73,23 @@ def leiloes_k(leilaoId):
     except:
         return {"error":  "Invalid authentication"}
 
-@app.route('/leiloes' , methods=['GET'])
+
+@app.route('/leiloes/<keyword>', methods=['GET','PUT'])
+def leiloes_K(keyword):
+    try:
+        if authenticate(request.args['token']):
+            if request.method == 'GET':
+                return search_auctions(keyword)
+            else:
+                return change_auction(keyword)
+        else:
+            return {"error": "Invalid authentication"}
+    except:
+        return {"error": "Invalid authentication"}
+
+
+# TODO TEST
+@app.route('/leiloes', methods=['GET'])
 def leiloes():
     try:
         if (authenticate(request.args['token'])):
@@ -95,6 +114,7 @@ def leiloes():
             return {"error": "Invalid authentication"}
     except:
         return {"error": "Invalid authentication"}
+
 
 @app.route('/licitar/<leilaoId>/<licitacao>', methods=['GET'])
 def licitar(leilaoId, licitacao):
@@ -214,15 +234,13 @@ def createAuction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
         except:
             return {"error": "Invalid token"}
 
-        date = datetime.datetime.strptime(data_de_fim, '%m/%d/%Y')
+        date = datetime.datetime.strptime(data_de_fim, '%d/%m/%Y, %H:%M')  # dia/mes/ano, hora:minuto
         today = datetime.datetime.now()
         if today > date:
             return {"erro": 'Data incorreta'}  # colocar data default?
 
-        insert = """ INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
-                VALUES (%s, %s, %s, %s, %s, %s)"""
         values = (titulo, descricao, artigoId, precoMinimo, date, username)
-        cur.execute(insert, values)
+        cur.execute(INSERT_AUCTION, values)
 
         conn.commit()
         cur.close()
@@ -230,6 +248,7 @@ def createAuction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
 
     except Exception as e:
         return {"erro": '{m}'.format(m=str(e))}
+
 
 def changeDetails(leilaoId, **definitions):
     if len(definitions)!=0:
@@ -261,6 +280,73 @@ def changeDetails(leilaoId, **definitions):
     else:
         return {"error": "lack of arguments"}
 
+
+def search_auctions(keyword):
+    try:
+        conn = db_connection()
+        cur = conn.cursor()
+
+        command = f"""SELECT id, description FROM auction WHERE id LIKE '%{keyword}%' or description LIKE '%{keyword}%'"""
+        cur.execute(command)
+
+        result = cur.fetchall()
+
+        if result is not None:
+            return jsonify([{"leilaoId": x[0], "descricao": x[1]} for x in result])
+        else:
+            return {"error": 'not found'}
+
+    except Exception as e:
+        return {"erro": '{m}'.format(m=str(e))}
+
+
+def change_auction(keyword):
+    return {"fazer": "editar"}
+
+
+def consult_auction(leilaoId):
+    try:
+        conn = db_connection()
+        cur = conn.cursor()
+
+        command = f"""SELECT * FROM auction WHERE id = '{leilaoId}' """
+        cur.execute(command)
+
+        result = cur.fetchall()
+
+        if result is not None:
+            # INCOMPLETO - falta as mensagens e o historico (secalhar nem precisa destes detalhes todos - disuctir isto)
+            dict_result = {"leilaoId": result[0][2], "titulo": result[0][0], "descricao": result[0][1],
+                           "data": result[0][3], "licitacao": result[0][4], "vendedor": result[0][5]}
+            return jsonify(dict_result)
+        else:
+            return {"error": 'not found'}
+
+    except Exception as e:
+        return {"erro": '{m}'.format(m=str(e))}
+
+
+def activity_auction():
+    try:
+        conn = db_connection()
+        cur = conn.cursor()
+
+        # INCOMPLETO
+        command = f"""SELECT id, title, description FROM auction, auction_user WHERE username = auction_user_username"""
+        cur.execute(command)
+
+        result = cur.fetchall()
+
+        if result is not None:
+            return jsonify([{"leilaoId": x[0], "title": x[1],"descricao": x[2]} for x in result])
+        else:
+            return {"error": 'not found'}
+
+    except Exception as e:
+        return {"erro": '{m}'.format(m=str(e))}
+
+
+# TODO FINISH
 def bid(auctionID, bidValue, username):
     try:
         conn = db_connection()

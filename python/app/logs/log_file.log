@@ -1,6 +1,3 @@
-INFO:logger:
----------------------------------------------------------------
-API v1.0 online: http://localhost:8080/departments/
 
 
 WARNING:werkzeug: * Debugger is active!
