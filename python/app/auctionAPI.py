@@ -33,7 +33,7 @@ INSERT_USER = """ INSERT INTO auction_user VALUES (%s, %s) RETURNING username ""
 SELECT_AUCTIONS = " SELECT id, description FROM auction "
 SELECT_USERDATA = """ SELECT username, password  FROM auction_user where username=%s"""
 SELECT_USER = """ SELECT username  FROM auction_user where username=%s"""
-INSERT_AUCTION = """ INSERT INTO auction (title, description, id, biddding, finish_date, auction_user_username) 
+INSERT_AUCTION = """ INSERT INTO auction (title, description, id, biddding, finish_date, auction_user_username)
                 VALUES (%s, %s, %s, %s, %s, %s)"""
 
 # FLASK METHODS
@@ -126,6 +126,7 @@ def licitar(leilaoId, licitacao):
     except:
         return {"error": "Invalid authentication"}
 
+
 @app.route('/messageBox', methods=['GET'])
 def message():
     try:
@@ -151,6 +152,7 @@ def match_password(username, password):
     cur.close()
     return True
 
+
 def find_user(username):
     try:
         conn = db_connection()
@@ -162,8 +164,10 @@ def find_user(username):
     finally:
         cur.close()
 
+
 def decode(encoded):
     return jwt.decode(encoded, JWT_SECRET, JWT_ALGORITHM)['sub']
+
 
 def encode(value):
     payload = {
@@ -176,6 +180,7 @@ def encode(value):
         JWT_SECRET,
         algorithm=JWT_ALGORITHM
     )
+
 
 # authenticate(request.args['token'])
 def authenticate(auth_token):
@@ -206,6 +211,7 @@ def insertAuctionUser(username, password):
     finally:
         cur.close()
 
+
 def autenticationAuctionUser(username, password):
     try:
         if match_password(username, password):
@@ -219,6 +225,7 @@ def autenticationAuctionUser(username, password):
         error = '{m}'.format(m=str(e))
         logger.error(f'{DIV}{error}\n')
         return {"erro": error}
+
 
 def createAuction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
     try:

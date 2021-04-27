@@ -19,7 +19,7 @@ CREATE TABLE auction (
 	description		 varchar(512) NOT NULL,
 	id			 varchar(512) UNIQUE NOT NULL,
 	finish_date		 DATE,
-	biddding		 FLOAT(8) NOT NULL,
+	bidding		 FLOAT(8) NOT NULL,
 	auction_user_username varchar(512) NOT NULL,
 	PRIMARY KEY(id)
 );
@@ -74,7 +74,7 @@ INSERT INTO auction_user VALUES ('debug', 'pass');
 INSERT INTO auction_user VALUES ('Alberto', 't9FrBVvgy');
 
 INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
-                VALUES ('Bonita cama de madeira', 'Cama feita em madeira bem conservada de 2010', 'cama', 100, '2021-04-27T00:00:00'::timestamp, 'debug');
+                VALUES ('Bonita cama de madeira', 'Cama feita em madeira bem conservada de 2010', 'cama', 100, '2021-27-04T00:00:00'::timestamp, 'debug');
 
 
 /* Insere os departamentos
