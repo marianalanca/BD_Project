@@ -33,7 +33,7 @@ INSERT_USER = """ INSERT INTO auction_user VALUES (%s, %s) RETURNING username ""
 SELECT_AUCTIONS = " SELECT id, description FROM auction "
 SELECT_USERDATA = """ SELECT username, password  FROM auction_user where username=%s"""
 SELECT_USER = """ SELECT username  FROM auction_user where username=%s"""
-INSERT_AUCTION = """ INSERT INTO auction (title, description, id, biddding, finish_date, auction_user_username)
+INSERT_AUCTION = """ INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
                 VALUES (%s, %s, %s, %s, %s, %s)"""
 
 # FLASK METHODS
@@ -59,15 +59,13 @@ def leilao():
 
 # TODO
 @app.route('/leilao/<leilaoId>', methods=['GET','PUT'])
-def leiloes_k(leilaoId):
-    # editar propriedades; vai buscar as atuais, acrescenta na de histórico e muda o que recebeu
-    # recebe as coisas e vê se as chaves contêm as coisas esperadas
+def leilaoId(leilaoId):
     try:
         if (authenticate(request.args['token'])):
             if request.method == 'GET':
                 return consult_auction(leilaoId)
             else:  # PUT
-                return# changeDetails(leilaoId, request.get_json())  # ! dá erro!
+                return changeDetails(leilaoId, request.get_json())
         else:
             return {"error": "Invalid authentication"}
     except:
@@ -75,7 +73,7 @@ def leiloes_k(leilaoId):
 
 
 @app.route('/leiloes/<keyword>', methods=['GET','PUT'])
-def leiloes_K(keyword):
+def leiloesK(keyword):
     try:
         if authenticate(request.args['token']):
             if request.method == 'GET':
@@ -102,10 +100,9 @@ def leiloes():
                 cur.close()
                 if auctionsDB == None:
                     return jsonify([])
-                # passar para json
                 auctions = []
                 for auction in auctionsDB:
-                    auctions.append({"leilaoId": auction[0], "descricao": auction[1]})
+                    auctions.append({"leilaoId": auction[0], "descricao": auction[1]}) # TODO Aparece ao contrário
 
                 return jsonify(auctions)
             except:
@@ -256,8 +253,10 @@ def createAuction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
     except Exception as e:
         return {"erro": '{m}'.format(m=str(e))}
 
-
-def changeDetails(leilaoId, **definitions):
+# TODO ver se não tem outras coisas
+# se tiver argumento duplicado só aceita o segundo
+# ignora tudo o que esteja fora do title e descirption
+def changeDetails(leilaoId, definitions):
     if len(definitions)!=0:
         try:
             conn = db_connection()
@@ -267,25 +266,38 @@ def changeDetails(leilaoId, **definitions):
             cur.execute(select_auction, (leilaoId,))
             old_data = cur.fetchall()[0]
 
-            if 'title' in definitions.keys():
-                update_titulo = """ UPDATE auction SET title=%s WHERE id=%s"""
-                cur.execute(update_titulo, (definitions['title'], leilaoId,))
-            if 'description' in definitions.keys():
-                update_titulo = """ UPDATE auction SET description=%s WHERE id=%s"""
-                cur.execute(update_titulo, (definitions['description'], leilaoId,))
-
-            change_date = datetime.datetime.now() # ??
+            change_date = datetime.datetime.now()
             insert_history = """ INSERT INTO history VALUES (%s, %s, %s, %s) """
             cur.execute(insert_history, (change_date, old_data[0], old_data[1], leilaoId))
 
+            title = old_data[0]
+            description = old_data[1]
+
+            if 'title' in definitions.keys():
+                update_titulo = """ UPDATE auction SET title=%s WHERE id=%s"""
+                cur.execute(update_titulo, (definitions['title'], leilaoId,))
+                title = definitions['title']
+            if 'description' in definitions.keys():
+                update_titulo = """ UPDATE auction SET description=%s WHERE id=%s"""
+                cur.execute(update_titulo, (definitions['description'], leilaoId,))
+                description = definitions['description']
+
+            if title==old_data[0] and description==old_data[1]:
+                conn.rollback()
+                logger.error(f'{DIV}Nothing has changed\n')
+                return {"error": "Nothing has changed"}
+
             conn.commit()
-            return {"coisa": "coisa"}
-        except:
-            return {"error": "FUCK OFF"}
+            return {"leilaoId": leilaoId, "title": title, "description": description}
+        except Exception as e:
+            error = '{m}'.format(m=str(e))
+            logger.error(f'{DIV}{error}\n')
+            return {"error": error}
         finally:
             cur.close()
     else:
-        return {"error": "lack of arguments"}
+        logger.error(f'{DIV}Lack of arguments\n')
+        return {"error": "Lack of arguments"}
 
 
 def search_auctions(keyword):
@@ -353,7 +365,6 @@ def activity_auction():
         return {"erro": '{m}'.format(m=str(e))}
 
 
-# TODO FINISH
 def bid(auctionID, bidValue, username):
     try:
         conn = db_connection()
@@ -367,10 +378,11 @@ def bid(auctionID, bidValue, username):
             logger.error(f'{DIV}Auction ID does not exist')
             return {"erro": 'Auction ID does not exist'}
 
-        bid_date = datetime.datetime.now().date()
+        bid_date = datetime.datetime.now()
         date = auction[0][1]
-        # logger.info(f'{type(bid_date)} {type(date)}')
+        logger.info(f'{type(bid_date)} {bid_date} {date}')
 
+        # NÃO FUNCIONA!
         try:
             if bid_date > date:
                 logger.error('The auction has already closed')
