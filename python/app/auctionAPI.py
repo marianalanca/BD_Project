@@ -49,6 +49,7 @@ def user():
     logger.error(f'{DIV}Wrong Arguments\n')
     return {"erro": "Wrong arguments"}
 
+
 @app.route('/leilao', methods=['POST'])
 def leilao():
     args = request.get_json()
@@ -56,18 +57,38 @@ def leilao():
         return create_auction(**args)
     return {"erro": "Wrong number of arguments"}
 
+
 @app.route('/leilao/<leilaoId>', methods=['GET','PUT'])
-def leiloes_k(leilaoId):
+def leilao_k(leilaoId):
     try:
-        if (authenticate(request.args['token'])):
-            return
+        if authenticate(request.args['token']):
+            print("oi amiginho")
+            if request.method == 'GET':
+                return consult_auction(leilaoId)
+            else:
+                return
         else:
             return {"error": "Invalid authentication"}
     except:
         return {"error": "Invalid authentication"}
 
+
+@app.route('/leiloes/<keyword>', methods=['GET','PUT'])
+def leiloes_K(keyword):
+    try:
+        if authenticate(request.args['token']):
+            if request.method == 'GET':
+                return search_auctions(keyword)
+            else:
+                return change_auction(keyword)
+        else:
+            return {"error": "Invalid authentication"}
+    except:
+        return {"error": "Invalid authentication"}
+
+
 # TODO TEST
-@app.route('/leiloes' , methods=['GET'])
+@app.route('/leiloes', methods=['GET'])
 def leiloes():
     try:
         if (authenticate(request.args['token'])):
@@ -92,6 +113,7 @@ def leiloes():
             return {"error": "Invalid authentication"}
     except:
         return {"error": "Invalid authentication"}
+
 
 @app.route('/licitar/<leilaoId>/<licitacao>', methods=['GET'])
 def licitar(leilaoId, licitacao):
@@ -198,6 +220,7 @@ def autentication_auction_user(username, password):
         logger.error(f'{DIV}{error}\n')
         return {"erro": error}
 
+
 def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
     try:
         conn = db_connection()
@@ -212,7 +235,7 @@ def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
         except:
             return {"error": "Invalid token"}
 
-        date = datetime.datetime.strptime(data_de_fim, '%m/%d/%Y')
+        date = datetime.datetime.strptime(data_de_fim, '%d/%m/%Y, %H:%M')  # dia/mes/ano, hora:minuto
         today = datetime.datetime.now()
         if today > date:
             return {"erro": 'Data incorreta'}  # colocar data default?
@@ -226,6 +249,72 @@ def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
 
     except Exception as e:
         return {"erro": '{m}'.format(m=str(e))}
+
+
+def search_auctions(keyword):
+    try:
+        conn = db_connection()
+        cur = conn.cursor()
+
+        command = f"""SELECT id, description FROM auction WHERE id LIKE '%{keyword}%' or description LIKE '%{keyword}%'"""
+        cur.execute(command)
+
+        result = cur.fetchall()
+
+        if result is not None:
+            return jsonify([{"leilaoId": x[0], "descricao": x[1]} for x in result])
+        else:
+            return {"error": 'not found'}
+
+    except Exception as e:
+        return {"erro": '{m}'.format(m=str(e))}
+
+
+def change_auction(keyword):
+    return {"fazer": "editar"}
+
+
+def consult_auction(leilaoId):
+    try:
+        conn = db_connection()
+        cur = conn.cursor()
+
+        command = f"""SELECT * FROM auction WHERE id = '{leilaoId}' """
+        cur.execute(command)
+
+        result = cur.fetchall()
+
+        if result is not None:
+            # INCOMPLETO - falta as mensagens e o historico (secalhar nem precisa destes detalhes todos - disuctir isto)
+            dict_result = {"leilaoId": result[0][2], "titulo": result[0][0], "descricao": result[0][1],
+                           "data": result[0][3], "licitacao": result[0][4], "vendedor": result[0][5]}
+            return jsonify(dict_result)
+        else:
+            return {"error": 'not found'}
+
+    except Exception as e:
+        return {"erro": '{m}'.format(m=str(e))}
+
+
+def activity_auction():
+    try:
+        conn = db_connection()
+        cur = conn.cursor()
+
+        # INCOMPLETO
+        command = f"""SELECT id, title, description FROM auction, auction_user WHERE username = auction_user_username"""
+        cur.execute(command)
+
+        result = cur.fetchall()
+
+        if result is not None:
+            return jsonify([{"leilaoId": x[0], "title": x[1],"descricao": x[2]} for x in result])
+        else:
+            return {"error": 'not found'}
+
+    except Exception as e:
+        return {"erro": '{m}'.format(m=str(e))}
+
 
 # TODO FINISH
 def bid(auctionID, bidValue, username):
