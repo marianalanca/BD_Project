@@ -19,7 +19,7 @@ CREATE TABLE auction (
 	description		 varchar(512) NOT NULL,
 	id			 varchar(512) UNIQUE NOT NULL,
 	finish_date		 DATE,
-	bidding		 FLOAT(8) NOT NULL,
+	biddding		 FLOAT(8) NOT NULL,
 	auction_user_username varchar(512) NOT NULL,
 	PRIMARY KEY(id)
 );
@@ -30,7 +30,7 @@ CREATE TABLE bidding (
 	bid_date		 DATE,
 	auction_id		 varchar(512),
 	auction_user_username varchar(512),
-	PRIMARY KEY(auction_id,auction_user_username)
+	PRIMARY KEY(bid_date,auction_id,auction_user_username)
 );
 
 /* Create bidding message table */
@@ -73,8 +73,8 @@ ALTER TABLE history ADD CONSTRAINT history_fk1 FOREIGN KEY (auction_id) REFERENC
 INSERT INTO auction_user VALUES ('debug', 'pass');
 INSERT INTO auction_user VALUES ('Alberto', 't9FrBVvgy');
 
-INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username) 
-                VALUES ('Bonita cama de madeira', 'Cama feita em madeira bem conservada de 2010', 'cama', 100, '2021-04-27T00:00:00'::timestamp, 'debug')
+INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
+                VALUES ('Bonita cama de madeira', 'Cama feita em madeira bem conservada de 2010', 'cama', 100, '2021-04-27T00:00:00'::timestamp, 'debug');
 
 
 /* Insere os departamentos

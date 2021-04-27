@@ -41,9 +41,9 @@ def user():
     req = request.get_json()
     if(request.get_json()!=None and len(req)==2 and ('username' in req.keys()) and ('password' in req.keys())):
         if request.method == 'POST':
-            return insert_auction_user(**req)
+            return insertAuctionUser(**req)
         else:
-            return autentication_auction_user(**req) # fazer verificação
+            return autenticationAuctionUser(**req) # fazer verificação
     logger.error(f'{DIV}Wrong Arguments\n')
     return {"erro": "Wrong arguments"}
 
@@ -51,20 +51,25 @@ def user():
 def leilao():
     args = request.get_json()
     if args!=None and len(args)==5:
-        return create_auction(**args)
+        return createAuction(**args)
     return {"erro": "Wrong number of arguments"}
 
+# TODO
 @app.route('/leilao/<leilaoId>', methods=['GET','PUT'])
 def leiloes_k(leilaoId):
+    # editar propriedades; vai buscar as atuais, acrescenta na de histórico e muda o que recebeu
+    # recebe as coisas e vê se as chaves contêm as coisas esperadas
     try:
         if (authenticate(request.args['token'])):
-            return
+            if request.method == 'POST':
+                return
+            else:  # PUT
+                return# changeDetails(leilaoId, request.get_json())  # ! dá erro!
         else:
             return {"error": "Invalid authentication"}
     except:
-        return {"error": "Invalid authentication"}
+        return {"error":  "Invalid authentication"}
 
-# TODO TEST
 @app.route('/leiloes' , methods=['GET'])
 def leiloes():
     try:
@@ -101,7 +106,6 @@ def licitar(leilaoId, licitacao):
     except:
         return {"error": "Invalid authentication"}
 
-# TODO
 @app.route('/messageBox', methods=['GET'])
 def message():
     try:
@@ -165,7 +169,7 @@ def authenticate(auth_token):
 
 # FUNCTIONALITIES
 
-def insert_auction_user(username, password):
+def insertAuctionUser(username, password):
     try :
         conn = db_connection()
         # create a cursor
@@ -182,7 +186,7 @@ def insert_auction_user(username, password):
     finally:
         cur.close()
 
-def autentication_auction_user(username, password):
+def autenticationAuctionUser(username, password):
     try:
         if match_password(username, password):
             encoded = encode(username)
@@ -196,7 +200,7 @@ def autentication_auction_user(username, password):
         logger.error(f'{DIV}{error}\n')
         return {"erro": error}
 
-def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
+def createAuction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
     try:
         conn = db_connection()
         cur = conn.cursor()
@@ -227,34 +231,60 @@ def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
     except Exception as e:
         return {"erro": '{m}'.format(m=str(e))}
 
-# TODO FINISH
+def changeDetails(leilaoId, **definitions):
+    if len(definitions)!=0:
+        try:
+            conn = db_connection()
+            cur = conn.cursor()
+
+            select_auction = """ SELECT title, description FROM auction where id=%s"""
+            cur.execute(select_auction, (leilaoId,))
+            old_data = cur.fetchall()[0]
+
+            if 'title' in definitions.keys():
+                update_titulo = """ UPDATE auction SET title=%s WHERE id=%s"""
+                cur.execute(update_titulo, (definitions['title'], leilaoId,))
+            if 'description' in definitions.keys():
+                update_titulo = """ UPDATE auction SET description=%s WHERE id=%s"""
+                cur.execute(update_titulo, (definitions['description'], leilaoId,))
+
+            change_date = datetime.datetime.now() # ??
+            insert_history = """ INSERT INTO history VALUES (%s, %s, %s, %s) """
+            cur.execute(insert_history, (change_date, old_data[0], old_data[1], leilaoId))
+
+            conn.commit()
+            return {"coisa": "coisa"}
+        except:
+            return {"error": "FUCK OFF"}
+        finally:
+            cur.close()
+    else:
+        return {"error": "lack of arguments"}
+
 def bid(auctionID, bidValue, username):
     try:
         conn = db_connection()
         cur = conn.cursor()
 
         select_auction = """ SELECT bidding, finish_date FROM auction where id=%s"""
-
         cur.execute(select_auction, (auctionID,))
-
         auction = cur.fetchall()
 
         if auction == None:
-            logger.error('Auction ID does not exist')
+            logger.error(f'{DIV}Auction ID does not exist')
             return {"erro": 'Auction ID does not exist'}
 
-        # TODO adicionar parte de adicionar biding à lista de bids
+        bid_date = datetime.datetime.now().date()
+        date = auction[0][1]
+        # logger.info(f'{type(bid_date)} {type(date)}')
 
-        bid_date = datetime.datetime.now()
-        # logger.info(bid_date)
-        '''try:
-            if bid_date > auction[0][1]: # and
+        try:
+            if bid_date > date:
                 logger.error('The auction has already closed')
                 return {"error": "The auction has already closed"}
         except:
-            logger.error('Could not convert date to right format')
+            logger.error(f'{DIV}Could not convert date to right format ')
             return {"error": "Could not convert date to right format"}
-        '''
 
         try:
             if int(bidValue) <= int(auction[0][0]):
@@ -264,21 +294,21 @@ def bid(auctionID, bidValue, username):
             logger.error('Could not convert price to int')
             return {"erro": 'Could not convert price to int'}
 
+        # update bidding value in auction
         select_auction = """ UPDATE auction SET bidding=%s WHERE id=%s"""
         cur.execute(select_auction, (bidValue, auctionID,))
 
-        # HERE
-
-        insert_bidding = """ INSERT INTO bidding VALUES (%s, %s) WHERE id=%s"""
-
-        # ! DÁ ERRO
-        #cur.execute(insert_bidding, (bidValue, bid_date, auctionID,))
+        # Insert into bidding table
+        insert_bidding = """ INSERT INTO bidding VALUES (%s, %s, %s, %s)"""
+        cur.execute(insert_bidding, (bidValue, bid_date, auctionID, username))
 
         conn.commit()
-        logger.info('Successful bid')
+        logger.info(f'{DIV}Successful bid')
         return {"Status": "Successful bid"}
     except Exception as e:
-        return {"erro": '{m}'.format(m=str(e))}
+        error = '{m}'.format(m=str(e))
+        logger.error(f'{DIV}{error}')
+        return {"erro": error}
     finally:
         cur.close()
 

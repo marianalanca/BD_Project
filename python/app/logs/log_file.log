@@ -2726,3 +2726,692 @@ API v1.0 online: http://localhost:8080/
 
 WARNING:werkzeug: * Debugger is active!
 INFO:werkzeug: * Debugger PIN: 203-174-249
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 203-174-249
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 203-174-249
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 203-174-249
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 203-174-249
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 203-174-249
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 22:13:33] "[37mGET /licitar/cama/150?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk0Njk4NzQsImlhdCI6MTYxOTQ2NDQ3NCwic3ViIjoiZGVidWcifQ.8AYXTfgx1Jqr12RzHask77ptTuHkMR1VN3PJkhYC8m8 HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 203-174-249
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 203-174-249
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 203-174-249
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 203-174-249
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 203-174-249
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 203-174-249
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 203-174-249
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 310-915-939
+INFO:logger:
+---------------------------------------------------------------
+Authentication token generated
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk0ODM4MDQsImlhdCI6MTYxOTQ3ODQwNCwic3ViIjoiZGVidWcifQ.IhEVvEF-uJVWcKFDSc9nuK4ge6TdAlpkZeqn-lKI5mE
+
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 23:06:44] "[37mPUT /user HTTP/1.1[0m" 200 -
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 23:07:00] "[37mGET /leiloes?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk0ODM4MDQsImlhdCI6MTYxOTQ3ODQwNCwic3ViIjoiZGVidWcifQ.IhEVvEF-uJVWcKFDSc9nuK4ge6TdAlpkZeqn-lKI5mE HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 310-915-939
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 23:07:57] "[37mGET /leiloes?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk0ODM4MDQsImlhdCI6MTYxOTQ3ODQwNCwic3ViIjoiZGVidWcifQ.IhEVvEF-uJVWcKFDSc9nuK4ge6TdAlpkZeqn-lKI5mE HTTP/1.1[0m" 200 -
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 23:08:08] "[37mPUT /leilao/cama?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk0ODM4MDQsImlhdCI6MTYxOTQ3ODQwNCwic3ViIjoiZGVidWcifQ.IhEVvEF-uJVWcKFDSc9nuK4ge6TdAlpkZeqn-lKI5mE HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 310-915-939
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 23:08:59] "[37mPUT /leilao/cama?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk0ODM4MDQsImlhdCI6MTYxOTQ3ODQwNCwic3ViIjoiZGVidWcifQ.IhEVvEF-uJVWcKFDSc9nuK4ge6TdAlpkZeqn-lKI5mE HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 310-915-939
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 23:09:08] "[37mPUT /leilao/cama?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk0ODM4MDQsImlhdCI6MTYxOTQ3ODQwNCwic3ViIjoiZGVidWcifQ.IhEVvEF-uJVWcKFDSc9nuK4ge6TdAlpkZeqn-lKI5mE HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 310-915-939
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 640-588-017
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 640-588-017
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 23:10:27] "[37mPUT /leilao/cama?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk0ODM4MDQsImlhdCI6MTYxOTQ3ODQwNCwic3ViIjoiZGVidWcifQ.IhEVvEF-uJVWcKFDSc9nuK4ge6TdAlpkZeqn-lKI5mE HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 640-588-017
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 23:10:47] "[37mPUT /leilao/cama?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk0ODM4MDQsImlhdCI6MTYxOTQ3ODQwNCwic3ViIjoiZGVidWcifQ.IhEVvEF-uJVWcKFDSc9nuK4ge6TdAlpkZeqn-lKI5mE HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 640-588-017
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 640-588-017
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 23:11:21] "[37mPUT /leilao/cama?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk0ODM4MDQsImlhdCI6MTYxOTQ3ODQwNCwic3ViIjoiZGVidWcifQ.IhEVvEF-uJVWcKFDSc9nuK4ge6TdAlpkZeqn-lKI5mE HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 640-588-017
+INFO:werkzeug:172.18.0.1 - - [26/Apr/2021 23:11:30] "[37mPUT /leilao/cama?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk0ODM4MDQsImlhdCI6MTYxOTQ3ODQwNCwic3ViIjoiZGVidWcifQ.IhEVvEF-uJVWcKFDSc9nuK4ge6TdAlpkZeqn-lKI5mE HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 640-588-017
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 640-588-017
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 640-588-017
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:logger:
+---------------------------------------------------------------
+Authentication token generated
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs
+
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:32:53] "[37mPUT /user HTTP/1.1[0m" 200 -
+ERROR:logger:Bid value is too low
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:33:53] "[37mGET /licitar/cama/100?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:logger:Successful bid
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:33:59] "[37mGET /licitar/cama/200?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+ERROR:logger:Bid value is too low
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:34:03] "[37mGET /licitar/cama/200?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:36:42] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:37:24] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:37:50] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:38:00] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:38:36] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:38:42] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:39:00] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:39:11] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:logger:oi?
+INFO:logger:Successful bid
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:39:48] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+ERROR:logger:Could not convert date to right format
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:40:14] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:40:28] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+ERROR:logger:Could not convert date to right format 2021-04-27
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:40:43] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:41:50] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+ERROR:logger:
+---------------------------------------------------------------
+Could not convert date to right format 
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:42:14] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 176-476-250
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 172-563-455
+INFO:logger:04/27/2021 2021-04-27
+ERROR:logger:
+---------------------------------------------------------------
+Could not convert date to right format 
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:49:04] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 172-563-455
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 172-563-455
+INFO:logger:<class 'str'> <class 'datetime.date'>
+ERROR:logger:
+---------------------------------------------------------------
+Could not convert date to right format 
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:50:38] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 172-563-455
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 172-563-455
+INFO:logger:<class 'datetime.datetime'> <class 'datetime.date'>
+ERROR:logger:
+---------------------------------------------------------------
+Could not convert date to right format 
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:50:52] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 172-563-455
+ERROR:logger:
+---------------------------------------------------------------
+'datetime.date' object is not callable
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:51:42] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 164-758-282
+INFO:logger:<class 'datetime.date'> <class 'datetime.date'>
+ERROR:logger:Bid value is too low
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:52:44] "[37mGET /licitar/cama/250?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:logger:<class 'datetime.date'> <class 'datetime.date'>
+ERROR:logger:
+---------------------------------------------------------------
+duplicate key value violates unique constraint "bidding_pkey"
+DETAIL:  Key (auction_id, auction_user_username)=(cama, debug) already exists.
+
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 16:53:10] "[37mGET /licitar/cama/280?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 164-758-282
+INFO:logger:<class 'datetime.date'> <class 'datetime.date'>
+ERROR:logger:
+---------------------------------------------------------------
+insert or update on table "bidding" violates foreign key constraint "bidding_fk2"
+DETAIL:  Key (auction_user_username)=(debug1) is not present in table "auction_user".
+
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 17:01:22] "[37mGET /licitar/cama/280?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 164-758-282
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 164-758-282
+INFO:logger:<class 'datetime.date'> <class 'datetime.date'>
+ERROR:logger:
+---------------------------------------------------------------
+insert or update on table "bidding" violates foreign key constraint "bidding_fk2"
+DETAIL:  Key (auction_user_username)=(username) is not present in table "auction_user".
+
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 17:01:41] "[37mGET /licitar/cama/280?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 164-758-282
+INFO:logger:<class 'datetime.date'> <class 'datetime.date'>
+ERROR:logger:
+---------------------------------------------------------------
+insert or update on table "bidding" violates foreign key constraint "bidding_fk2"
+DETAIL:  Key (auction_user_username)=(user) is not present in table "auction_user".
+
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 17:01:53] "[37mGET /licitar/cama/280?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:logger:
+---------------------------------------------------------------
+User debug1 created successfuly
+
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 17:02:15] "[37mPOST /user HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 164-758-282
+INFO:logger:<class 'datetime.date'> <class 'datetime.date'>
+INFO:logger:
+---------------------------------------------------------------
+Successful bid
+INFO:werkzeug:172.18.0.1 - - [27/Apr/2021 17:02:27] "[37mGET /licitar/cama/280?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk1NDY1NzMsImlhdCI6MTYxOTU0MTE3Mywic3ViIjoiZGVidWcifQ.HaLEsj8GWdhKjdSM1w7cC_XEc1EXWh6Hll5SIx3x7Fs HTTP/1.1[0m" 200 -
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 164-758-282
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 164-758-282
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 164-758-282
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 164-758-282
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 164-758-282
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 164-758-282
+INFO:werkzeug: * Detected change in '/app/auctionAPI.py', reloading
+INFO:werkzeug: * Restarting with stat
+INFO:logger:
+---------------------------------------------------------------
+API v1.0 online: http://localhost:8080/
+
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 164-758-282
