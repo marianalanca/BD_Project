@@ -33,6 +33,8 @@ INSERT_USER = """ INSERT INTO auction_user VALUES (%s, %s) RETURNING username ""
 SELECT_AUCTIONS = " SELECT id, description FROM auction "
 SELECT_USERDATA = """ SELECT username, password  FROM auction_user where username=%s"""
 SELECT_USER = """ SELECT username  FROM auction_user where username=%s"""
+INSERT_AUCTION = """ INSERT INTO auction (title, description, id, biddding, finish_date, auction_user_username) 
+                VALUES (%s, %s, %s, %s, %s, %s)"""
 
 # FLASK METHODS
 
@@ -215,10 +217,8 @@ def create_auction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
         if today > date:
             return {"erro": 'Data incorreta'}  # colocar data default?
 
-        insert = """ INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
-                VALUES (%s, %s, %s, %s, %s, %s)"""
         values = (titulo, descricao, artigoId, precoMinimo, date, username)
-        cur.execute(insert, values)
+        cur.execute(INSERT_AUCTION, values)
 
         conn.commit()
         cur.close()
