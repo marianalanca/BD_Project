@@ -70,8 +70,9 @@ ALTER TABLE mural_msg ADD CONSTRAINT mural_msg_fk1 FOREIGN KEY (auction_id) REFE
 ALTER TABLE mural_msg ADD CONSTRAINT mural_msg_fk2 FOREIGN KEY (auction_user_username) REFERENCES auction_user(username);
 ALTER TABLE history ADD CONSTRAINT history_fk1 FOREIGN KEY (auction_id) REFERENCES auction(id);
 
-INSERT INTO auction_user VALUES ('debug', 'pass');
-INSERT INTO auction_user VALUES ('Alberto', 't9FrBVvgy');
+/*{ "username": "debug", "password": "pass" }*/
+INSERT INTO auction_user VALUES ('debug', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTk1NTY1NDQsInN1YiI6InBhc3MifQ.rBxKYTw2UPxXjnF4ODsxntTFOisWiHvvZPcwHz-URMs');
+/*INSERT INTO auction_user VALUES ('Alberto', 't9FrBVvgy');*/
 
 INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
                 VALUES ('Bonita cama de madeira', 'Cama feita em madeira bem conservada de 2010', 'cama', 100, '2021-04-28T20:00:00'::timestamp, 'debug');

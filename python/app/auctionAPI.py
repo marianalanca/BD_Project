@@ -36,6 +36,10 @@ SELECT_USER = """ SELECT username  FROM auction_user where username=%s"""
 INSERT_AUCTION = """ INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
                 VALUES (%s, %s, %s, %s, %s, %s)"""
 
+# ! SQLERRM
+# * TRIGGER
+# * Script para correr vários requests ao mesmo tempo
+
 # FLASK METHODS
 
 @app.route('/user', methods=['POST', 'PUT'])
@@ -124,10 +128,27 @@ def licitar(leilaoId, licitacao):
         return {"error": "Invalid authentication"}
 
 
+# TODO TEST
+@app.route('/mural/<leilaoId>', methods=['POST'])
+def sendMural(leilaoId):
+    try:
+        if (authenticate(request.args['token'])):
+            message = request.args['message']
+            sendMessageMural(message, leilaoId, decode(request.args['token']))
+        else:
+            return {"error": "Invalid authentication"}
+    except:
+        return {"error": "Invalid authentication"}
+
+
+# MUDAR BD
+# ir buscar mensagens com os auctions em que a pessoa participou de algum modo
 @app.route('/messageBox', methods=['GET'])
 def message():
     try:
         if (authenticate(request.args['token'])):
+            # enviar todas as mensagens em json -> mensagens do leilão
+            # tenho de ter em conta os leilões em que a pessoa está!
             return
         else:
             return {"error": "Invalid authentication"}
@@ -140,7 +161,7 @@ def match_password(username, password):
     cur = conn.cursor()
     cur.execute(SELECT_USERDATA, (username,))
     try:
-        if password!=cur.fetchone()[1]:
+        if password!=decode(cur.fetchone()[1]):
             cur.close()
             return False
     except:
@@ -167,8 +188,8 @@ def decode(encoded):
 
 
 def encode(value):
+    # 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=90),
     payload = {
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=90),
         'iat': datetime.datetime.utcnow(),
         'sub': value
     }
@@ -196,7 +217,10 @@ def insertAuctionUser(username, password):
         conn = db_connection()
         # create a cursor
         cur = conn.cursor()
-        cur.execute(INSERT_USER, (username, password,))
+        passw = encode(password)
+        logger.info(passw)
+        logger.info(len(passw))
+        cur.execute(INSERT_USER, (username, passw,))
         new_id = cur.fetchone()[0]
         conn.commit()
         logger.info(f'{DIV}User {new_id} created successfuly\n')
@@ -382,7 +406,6 @@ def bid(auctionID, bidValue, username):
         date = auction[0][1]
         logger.info(f'{type(bid_date)} {bid_date} {date}')
 
-        # NÃO FUNCIONA!
         try:
             if bid_date > date:
                 logger.error('The auction has already closed')
@@ -410,6 +433,27 @@ def bid(auctionID, bidValue, username):
         conn.commit()
         logger.info(f'{DIV}Successful bid')
         return {"Status": "Successful bid"}
+    except Exception as e:
+        error = '{m}'.format(m=str(e))
+        logger.error(f'{DIV}{error}')
+        return {"erro": error}
+    finally:
+        cur.close()
+
+
+def sendMessageMural(message, auction_ID, user):
+    try:
+        conn = db_connection()
+        cur = conn.cursor()
+
+        msg_time = datetime.datetime.now()
+
+        insert_message = """ INSERT INTO mural_msg VALUES(id, %s, %s, %s, %s)"""
+        cur.execute(insert_message, (message, msg_time, auction_ID, user))
+
+        conn.commit()
+        logger.info(f'{DIV}Message sent successfully')
+        return {"Status": "Message sent successfully"}
     except Exception as e:
         error = '{m}'.format(m=str(e))
         logger.error(f'{DIV}{error}')

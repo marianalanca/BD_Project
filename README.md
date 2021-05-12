@@ -3,7 +3,7 @@
 **THERE IS NOTHING TO READ SO FUCK OFF**
 
 ## RUN
-    docker-compose  -f docker-compose-python-psql.yml up --build
+    docker-compose  -f docker-compose.yml up --build
 
 ### Authentication
 
