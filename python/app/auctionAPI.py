@@ -37,7 +37,11 @@ INSERT_AUCTION = """ INSERT INTO auction (title, description, id, bidding, finis
                 VALUES (%s, %s, %s, %s, %s, %s)"""
 
 # ! SQLERRM
-# * TRIGGER
+# TODO ORGANIZAR
+# * TRIGGER:
+#   Quando adiciona uma mensagem, acciona um trigger para adicionar as outras
+#   Quando se faz uma bid, acciona 2 triggers: um para alterar o valor do bid e outro para adicionar a mensagem a dizer que o valor de bid foi alterado
+#   Ter outro para quando acaba? -> adicionar winner ao
 # * Script para correr vários requests ao mesmo tempo
 
 # FLASK METHODS
@@ -128,17 +132,16 @@ def licitar(leilaoId, licitacao):
         return {"error": "Invalid authentication"}
 
 
-# TODO TEST
 @app.route('/mural/<leilaoId>', methods=['POST'])
 def sendMural(leilaoId):
     try:
         if (authenticate(request.args['token'])):
-            message = request.args['message']
-            sendMessageMural(message, leilaoId, decode(request.args['token']))
+            message = request.get_json()['message']
+            return sendMessageMural(message, leilaoId, decode(request.args['token']))
         else:
             return {"error": "Invalid authentication"}
-    except:
-        return {"error": "Invalid authentication"}
+    except Exception as e:
+        return {"error": '{m}'.format(m = str(e))}
 
 
 # MUDAR BD
@@ -217,14 +220,18 @@ def insertAuctionUser(username, password):
         conn = db_connection()
         # create a cursor
         cur = conn.cursor()
-        passw = encode(password)
-        logger.info(passw)
-        logger.info(len(passw))
-        cur.execute(INSERT_USER, (username, passw,))
-        new_id = cur.fetchone()[0]
-        conn.commit()
-        logger.info(f'{DIV}User {new_id} created successfuly\n')
-        return {"userId": new_id}
+        if (validString(username)):
+            passw = encode(password)
+            logger.info(passw)
+            logger.info(len(passw))
+            cur.execute(INSERT_USER, (username, passw,))
+            new_id = cur.fetchone()[0]
+            conn.commit()
+            logger.info(f'{DIV}User {new_id} created successfuly\n')
+            return {"userId": new_id}
+        error_message = 'Username cannot contain special characters'
+        logger.error(f'{DIV}{error_message}\n')
+        return {"erro": error_message}
     except Exception as e:
         error = '{m}'.format(m = str(e))
         logger.error(f'{DIV}{error}\n')
@@ -389,6 +396,10 @@ def activity_auction():
         return {"erro": '{m}'.format(m=str(e))}
 
 
+def validString(str):
+    return not any(not c.isalnum() for c in str)
+
+
 def bid(auctionID, bidValue, username):
     try:
         conn = db_connection()
@@ -448,8 +459,10 @@ def sendMessageMural(message, auction_ID, user):
 
         msg_time = datetime.datetime.now()
 
-        insert_message = """ INSERT INTO mural_msg VALUES(id, %s, %s, %s, %s)"""
-        cur.execute(insert_message, (message, msg_time, auction_ID, user))
+        insert_message = """ INSERT INTO mural_msg VALUES('id', %s, %s, %s, %s)"""
+        # adicionar o id de mensagem
+        cur.execute(insert_message, (message, msg_time, auction_ID, user))   # TODO CHANGE
+        # TODO TRIGGER
 
         conn.commit()
         logger.info(f'{DIV}Message sent successfully')

@@ -23,7 +23,6 @@ CREATE TABLE auction (
 	auction_user_username varchar(512) NOT NULL,
 	PRIMARY KEY(id)
 );
-
 /* Create bidding table */
 CREATE TABLE bidding (
 	price		 FLOAT(8) NOT NULL,
@@ -33,7 +32,6 @@ CREATE TABLE bidding (
 	PRIMARY KEY(bid_date,auction_id,auction_user_username)
 );
 
-/* Create bidding message table */
 CREATE TABLE bidding_msg (
 	id_			 varchar(512),
 	content		 varchar(512),
@@ -42,17 +40,15 @@ CREATE TABLE bidding_msg (
 	PRIMARY KEY(id_)
 );
 
-/* Create mural message table */
 CREATE TABLE mural_msg (
 	id			 varchar(512),
 	content		 varchar(512),
-	sent_date		 DATE,
+	sent_date		 timestamp,
 	auction_id		 varchar(512) NOT NULL,
 	auction_user_username varchar(512) NOT NULL,
 	PRIMARY KEY(id)
 );
 
-/* Create auction history table */
 CREATE TABLE history (
 	change_date	 timestamp NOT NULL,
 	old_title	 varchar(512),
