@@ -65,6 +65,18 @@ def leilao():
         return createAuction(**args)
     return {"erro": "Wrong number of arguments"}
 
+
+@app.route('/ativ/', methods=['GET'])
+def ativ():
+    try:
+        if (authenticate(request.args['token'])):
+            return activity_auction(decode(request.args['token']))
+        else:
+            return {"error": "Invalid authentication"}
+    except:
+        return {"error":  "Invalid authentication"}
+
+
 # TODO
 @app.route('/leilao/<leilaoId>', methods=['GET','PUT'])
 def leilaoId(leilaoId):
@@ -405,7 +417,7 @@ def activity_auction(username):
 
     except Exception as e:
         return {"erro": '{m}'.format(m=str(e))}
-        
+
 
 def validString(str):
     return not any(not c.isalnum() for c in str)
