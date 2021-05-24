@@ -386,13 +386,14 @@ def consult_auction(leilaoId):
         return {"erro": '{m}'.format(m=str(e))}
 
 
-def activity_auction():
+def activity_auction(username):
     try:
         conn = db_connection()
         cur = conn.cursor()
 
         # INCOMPLETO
-        command = f"""SELECT id, title, description FROM auction, auction_user WHERE username = auction_user_username"""
+        # OR  (SELECT id_auction FROM bidding WHERE auction_user_username = '{username}')
+        command = f"""SELECT id, title, description FROM auction WHERE auction_user_username = '{username}'"""
         cur.execute(command)
 
         result = cur.fetchall()
@@ -404,7 +405,7 @@ def activity_auction():
 
     except Exception as e:
         return {"erro": '{m}'.format(m=str(e))}
-
+        
 
 def validString(str):
     return not any(not c.isalnum() for c in str)
