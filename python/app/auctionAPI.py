@@ -98,6 +98,7 @@ def leiloesK(keyword):
 @app.route('/leiloes', methods=['GET'])
 def leiloes():
     try:
+        # TODO passar para uma função
         if (authenticate(request.args['token'])):
             try:
                 conn = db_connection()
@@ -110,6 +111,15 @@ def leiloes():
                     return jsonify([])
                 auctions = []
                 for auction in auctionsDB:
+                    # HERE
+                    '''date = datetime.datetime.strptime(auction[3], '%d/%m/%Y, %H:%M')  # dia/mes/ano, hora:minuto
+                    today = datetime.datetime.now()
+                    toappend = {"leilaoId": auction[0], "descricao": auction[1]}
+                    if today > date :
+                        cur.execute(SELECT_AUCTIONS)
+                        auctionsDB = cur.fetchall()
+                        toappend['winner'] = 1 # ir buscar o último '''
+
                     auctions.append({"leilaoId": auction[0], "descricao": auction[1]}) # TODO Aparece ao contrário
 
                 return jsonify(auctions)
@@ -452,6 +462,7 @@ def bid(auctionID, bidValue, username):
         cur.close()
 
 
+# TODO TRIGGER
 def sendMessageMural(message, auction_ID, user):
     try:
         conn = db_connection()
@@ -459,11 +470,13 @@ def sendMessageMural(message, auction_ID, user):
 
         msg_time = datetime.datetime.now()
 
-        insert_message = """ INSERT INTO mural_msg VALUES('id', %s, %s, %s, %s)"""
+        insert_message = """ INSERT INTO mural_msg VALUES('id', %s, %s, %s, %s)"""  # TODO
         # adicionar o id de mensagem
         cur.execute(insert_message, (message, msg_time, auction_ID, user))   # TODO CHANGE
-        # TODO TRIGGER
 
+        # TODO TRIGGER
+        #select distinct auction_user_username from auction where auction_id=%s;
+        #
         conn.commit()
         logger.info(f'{DIV}Message sent successfully')
         return {"Status": "Message sent successfully"}
@@ -473,6 +486,18 @@ def sendMessageMural(message, auction_ID, user):
         return {"erro": error}
     finally:
         cur.close()
+
+
+# TODO TEST
+def getAuctionWinner(auction, cur):
+    try :
+        # podia também ter usado o all (PL5) mas parece menos eficiente
+        SELECT_AUCTIONS = "  SELECT auction_user_username FROM bidding where auction_id='cama' limit 1"
+        cur.execute(SELECT_AUCTIONS)
+        return cur.fetchall()
+    finally:
+        cur.close()
+
 
 # DB CONNECTION
 def db_connection():
