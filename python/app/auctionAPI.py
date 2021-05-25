@@ -36,15 +36,12 @@ SELECT_USER = """ SELECT username  FROM auction_user where username=%s"""
 INSERT_AUCTION = """ INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
                 VALUES (%s, %s, %s, %s, %s, %s)"""
 
-# ! SQLERRM
 # TODO ORGANIZAR
 # * TRIGGER:
-#   Quando adiciona uma mensagem, acciona um trigger para adicionar as outras
 #   Quando se faz uma bid, acciona 2 triggers: um para alterar o valor do bid e outro para adicionar a mensagem a dizer que o valor de bid foi alterado
 #   Ter outro para quando acaba? -> adicionar winner ao
 # * Script para correr vários requests ao mesmo tempo
 
-# FLASK METHODS
 
 @app.route('/user', methods=['POST', 'PUT'])
 def user():
@@ -114,6 +111,7 @@ def leiloes():
         if (authenticate(request.args['token'])):
             try:
                 conn = db_connection()
+                conn.set_session(readonly=True)
                 cur = conn.cursor()
                 cur.execute(SELECT_AUCTIONS)
                 auctionsDB = cur.fetchall()
@@ -123,15 +121,6 @@ def leiloes():
                     return jsonify([])
                 auctions = []
                 for auction in auctionsDB:
-                    # HERE
-                    '''date = datetime.datetime.strptime(auction[3], '%d/%m/%Y, %H:%M')  # dia/mes/ano, hora:minuto
-                    today = datetime.datetime.now()
-                    toappend = {"leilaoId": auction[0], "descricao": auction[1]}
-                    if today > date :
-                        cur.execute(SELECT_AUCTIONS)
-                        auctionsDB = cur.fetchall()
-                        toappend['winner'] = 1 # ir buscar o último '''
-
                     auctions.append({"leilaoId": auction[0], "descricao": auction[1]}) # TODO Aparece ao contrário
 
                 return jsonify(auctions)
@@ -166,15 +155,11 @@ def sendMural(leilaoId):
         return {"error": '{m}'.format(m = str(e))}
 
 
-# MUDAR BD
-# ir buscar mensagens com os auctions em que a pessoa participou de algum modo
 @app.route('/messageBox', methods=['GET'])
 def message():
     try:
         if (authenticate(request.args['token'])):
-            # enviar todas as mensagens em json -> mensagens do leilão
-            # tenho de ter em conta os leilões em que a pessoa está!
-            return
+            return messageBox(decode(request.args['token']))
         else:
             return {"error": "Invalid authentication"}
     except:
@@ -183,6 +168,7 @@ def message():
 
 def match_password(username, password):
     conn = db_connection()
+    conn.set_session(readonly=True)
     cur = conn.cursor()
     cur.execute(SELECT_USERDATA, (username,))
     try:
@@ -199,6 +185,7 @@ def match_password(username, password):
 def find_user(username):
     try:
         conn = db_connection()
+        conn.set_session(readonly=True)
         cur = conn.cursor()
         cur.execute(SELECT_USERDATA, (username,))
         return jsonify(cur.fetchone()[1])
@@ -225,7 +212,6 @@ def encode(value):
     )
 
 
-# authenticate(request.args['token'])
 def authenticate(auth_token):
     try:
         auth_token = request.args['token']
@@ -309,6 +295,7 @@ def createAuction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
 # TODO ver se não tem outras coisas
 # se tiver argumento duplicado só aceita o segundo
 # ignora tudo o que esteja fora do title e descirption
+# * TRIGGER?
 def changeDetails(leilaoId, definitions):
     if len(definitions)!=0:
         try:
@@ -356,6 +343,7 @@ def changeDetails(leilaoId, definitions):
 def search_auctions(keyword):
     try:
         conn = db_connection()
+        conn.set_session(readonly=True)
         cur = conn.cursor()
 
         command = f"""SELECT id, description FROM auction WHERE id LIKE '%{keyword}%' or description LIKE '%{keyword}%'"""
@@ -379,6 +367,7 @@ def change_auction(keyword):
 def consult_auction(leilaoId):
     try:
         conn = db_connection()
+        conn.set_session(readonly=True)
         cur = conn.cursor()
 
         command = f"""SELECT * FROM auction WHERE id = '{leilaoId}' """
@@ -401,6 +390,7 @@ def consult_auction(leilaoId):
 def activity_auction(username):
     try:
         conn = db_connection()
+        conn.set_session(readonly=True)
         cur = conn.cursor()
 
         # INCOMPLETO
@@ -475,7 +465,6 @@ def bid(auctionID, bidValue, username):
         cur.close()
 
 
-# TODO TRIGGER
 def sendMessageMural(message, auction_ID, user):
     try:
         conn = db_connection()
@@ -483,13 +472,11 @@ def sendMessageMural(message, auction_ID, user):
 
         msg_time = datetime.datetime.now()
 
-        insert_message = """ INSERT INTO mural_msg VALUES('id', %s, %s, %s, %s)"""  # TODO
-        # adicionar o id de mensagem
-        cur.execute(insert_message, (message, msg_time, auction_ID, user))   # TODO CHANGE
+        insert_message = """ INSERT INTO mural_msg VALUES(%s, %s, %s, %s, %s); """ 
 
-        # TODO TRIGGER
-        #select distinct auction_user_username from auction where auction_id=%s;
-        #
+        for receiver in getSenders(auction_ID, cur):
+            cur.execute(insert_message, (f"{receiver}_{auction_ID}_{msg_time}", message, msg_time, auction_ID, receiver))
+
         conn.commit()
         logger.info(f'{DIV}Message sent successfully')
         return {"Status": "Message sent successfully"}
@@ -501,7 +488,35 @@ def sendMessageMural(message, auction_ID, user):
         cur.close()
 
 
-# TODO TEST
+def messageBox(user):
+    try:
+        conn = db_connection()
+        conn.set_session(readonly=True)
+        cur = conn.cursor()
+
+        select_message = """ SELECT content, sent_date FROM mural_msg WHERE auction_user_username=%s """ 
+
+        cur.execute(select_message, (user,))
+
+        res = cur.fetchall()
+        
+        conn.commit()
+        logger.info(f'{DIV}{res}')
+        return jsonify(res)
+    except Exception as e:
+        error = '{m}'.format(m=str(e))
+        logger.error(f'{DIV}{error}')
+        return {"erro": error}
+    finally:
+        cur.close()
+
+
+def getSenders(auction_ID, cur):
+    select_receivers = f""" SELECT auction_user_username from auction where id='{auction_ID}' UNION select auction_user_username from bidding where auction_id='{auction_ID}' UNION select auction_user_username from mural_msg where auction_id='{auction_ID}'; """ 
+    cur.execute(select_receivers)
+    return [r[0] for r in cur.fetchall()]
+
+
 def getAuctionWinner(auction, cur):
     try :
         # podia também ter usado o all (PL5) mas parece menos eficiente

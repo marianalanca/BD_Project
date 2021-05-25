@@ -10,10 +10,14 @@
 
 
 docker ps
-docker exec -it <id> bash
+docker exec -it db bash
 psql -U aulaspl dbfichas
 
 
 <id> = bd
 
 após fazer a autenticação tem-se de passar como ?token=<token dado>
+
+
+## Authentication
+    
