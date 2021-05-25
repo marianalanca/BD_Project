@@ -52,7 +52,7 @@ def user():
         else:
             return autenticationAuctionUser(**req) # fazer verificação
     logger.error(f'{DIV}Wrong Arguments\n')
-    return {"erro": "Wrong arguments"}
+    return {"error": "Wrong arguments"}
 
 
 @app.route('/leilao', methods=['POST'])
@@ -292,10 +292,7 @@ def createAuction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
     except Exception as e:
         return {"erro": '{m}'.format(m=str(e))}
 
-# TODO ver se não tem outras coisas
-# se tiver argumento duplicado só aceita o segundo
-# ignora tudo o que esteja fora do title e descirption
-# * TRIGGER?
+
 def changeDetails(leilaoId, definitions):
     if len(definitions)!=0:
         try:
@@ -306,26 +303,21 @@ def changeDetails(leilaoId, definitions):
             cur.execute(select_auction, (leilaoId,))
             old_data = cur.fetchall()[0]
 
-            change_date = datetime.datetime.now()
-            insert_history = """ INSERT INTO history VALUES (%s, %s, %s, %s) """
-            cur.execute(insert_history, (change_date, old_data[0], old_data[1], leilaoId))
-
             title = old_data[0]
             description = old_data[1]
 
             if 'title' in definitions.keys():
-                update_titulo = """ UPDATE auction SET title=%s WHERE id=%s"""
-                cur.execute(update_titulo, (definitions['title'], leilaoId,))
                 title = definitions['title']
             if 'description' in definitions.keys():
-                update_titulo = """ UPDATE auction SET description=%s WHERE id=%s"""
-                cur.execute(update_titulo, (definitions['description'], leilaoId,))
                 description = definitions['description']
 
             if title==old_data[0] and description==old_data[1]:
                 conn.rollback()
                 logger.error(f'{DIV}Nothing has changed\n')
-                return {"error": "Nothing has changed"}
+                return {"error": "Nothing has changed"} 
+
+            update_auction = """ UPDATE auction set title=&s, description=%s where id=%s"""
+            cur.execute(update_auction, (title, description, leilaoId,))
 
             conn.commit()
             return {"leilaoId": leilaoId, "title": title, "description": description}
@@ -476,6 +468,8 @@ def sendMessageMural(message, auction_ID, user):
 
         for receiver in getSenders(auction_ID, cur):
             cur.execute(insert_message, (f"{receiver}_{auction_ID}_{msg_time}", message, msg_time, auction_ID, receiver))
+
+        cur.execute(insert_message, (f"{user}_{auction_ID}_{msg_time}", message, msg_time, auction_ID, user))
 
         conn.commit()
         logger.info(f'{DIV}Message sent successfully')

@@ -107,7 +107,7 @@ create or replace function notif_bid() returns trigger
 			if (r.auction_user_username!=old.auction_user_username) then
 			SELECT CONCAT(r.auction_user_username, now(), old.id) into id;
 			SELECT CONCAT('Bid has increased in auction ', old.id) into message_content;
-			INSERT INTO mural_msg VALUES(id, message_content , now(), old.id, r.auction_user_username); /*HERE*/
+			INSERT INTO mural_msg VALUES(id, message_content , now(), old.id, r.auction_user_username);
 			end if;
 		end loop;
 	return new;
@@ -115,6 +115,24 @@ create or replace function notif_bid() returns trigger
 	$$;
 
 create trigger notif_bid_trig
-after UPDATE on auction
+after UPDATE of bidding on auction
 for each row
 execute procedure notif_bid();
+
+
+create or replace function history_auction() returns trigger
+	language plpgsql
+	as $$
+	declare
+		id varchar(512);
+		message_content varchar(512);
+	begin
+		INSERT INTO history VALUES (now(), old.title, old.description, old.id);
+		return new;
+	end;
+	$$;
+
+create trigger history_auction_trig
+after UPDATE of title on auction
+for each row
+execute procedure history_auction();
