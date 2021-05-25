@@ -11,8 +11,6 @@ CREATE TABLE auction_user (
 	password varchar(512) NOT NULL,
 	PRIMARY KEY(username)
 );
-
-
 /* Create auction table */
 CREATE TABLE auction (
 	title		 varchar(512) NOT NULL,
@@ -71,13 +69,22 @@ ALTER TABLE history ADD CONSTRAINT history_fk1 FOREIGN KEY (auction_id) REFERENC
 INSERT INTO auction_user VALUES ('debug', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTk1NTY1NDQsInN1YiI6InBhc3MifQ.rBxKYTw2UPxXjnF4ODsxntTFOisWiHvvZPcwHz-URMs');
 INSERT INTO auction_user VALUES ('marianaLanca', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTk1NTY1NDQsInN1YiI6InBhc3MifQ.rBxKYTw2UPxXjnF4ODsxntTFOisWiHvvZPcwHz-URMs');
 INSERT INTO auction_user VALUES ('marianaLoreto', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTk1NTY1NDQsInN1YiI6InBhc3MifQ.rBxKYTw2UPxXjnF4ODsxntTFOisWiHvvZPcwHz-URMs');
-/*INSERT INTO auction_user VALUES ('Alberto', 't9FrBVvgy');*/
+INSERT INTO auction_user VALUES ('debug1', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjE5NTA3MDYsInN1YiI6InBhc3MifQ.h6Pmj-2ao7MNKTKesYANFVJtkVYoiF2SzIegYSYF1MY');
+INSERT INTO auction_user VALUES ('debug2', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjE5NTA3MTAsInN1YiI6InBhc3MifQ.NYY5sRbHisPE-aswDKldCWq1N5fby_6AyUJ0Ko_5jPQ');
+INSERT INTO auction_user VALUES ('debug3', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjE5NTA3MTQsInN1YiI6InBhc3MifQ.9S-c-F0yd6ZGr8MDftLfYS78x1VNBQXQU9RlvwxuS0U');
+INSERT INTO auction_user VALUES ('debug4', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjE5NTA3MTcsInN1YiI6InBhc3MifQ.sTKp3Ne0hevGkn6Ui8u7LN_49d5z-uGKgfOi2fCUfCY');
+INSERT INTO auction_user VALUES ('debug5', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjE5NTA3MjEsInN1YiI6InBhc3MifQ.iDPc0XP0e7hJVhrEYaYqJFdvIHKnbJDI1a3UumJH8U0');
+INSERT INTO auction_user VALUES ('debug6', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjE5NTA3NTUsInN1YiI6InBhc3MifQ.KISRAB7IgA8mg8snzxGAEzE0VMctFUXKSEHRJX8iNKE');
+INSERT INTO auction_user VALUES ('debug7', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjE5NTA3NjAsInN1YiI6InBhc3MifQ.sdMNcd6G5BeHq6Ym5XZvZ6YMHoVOFt23lEiBGbiMW4c');
+INSERT INTO auction_user VALUES ('debug8', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjE5NTA3NjIsInN1YiI6InBhc3MifQ.sq9ycK4oA48e-74NUoI9HwrGrwbW0FyjhsTrj_W7jbk');
+INSERT INTO auction_user VALUES ('debug9', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjE5NTA3NjQsInN1YiI6InBhc3MifQ.MpTpFcODvutO3WwQrYjrMpGO12trwh8Jcs-4Ym5e_8s');
+INSERT INTO auction_user VALUES ('debug10', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjE5NTA3NjYsInN1YiI6InBhc3MifQ.X9yOc-ZLeitOdMqzzNZRN9WQAFybp3GYf2aWMSpp6pc');
 
-INSERT INTO auction (title, description, id, bidding, finish_date, final_user_username, auction_user_username)
-                VALUES ('Bonita cama de madeira', 'Cama feita em madeira bem conservada de 2010', 'cama', 100, '2021-04-28T20:00:00'::timestamp, null,'debug');
+INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
+                VALUES ('Bonita cama de madeira', 'Cama feita em madeira bem conservada de 2010', 'cama', 100, '2022-04-28T20:00:00'::timestamp, 'debug');
 
-INSERT INTO auction (title, description, id, bidding, finish_date, final_user_username, auction_user_username)
-                VALUES ('Bonita cama de madeira de carvalho', 'Cama feita em madeira bem conservada de 2011', 'cama 2.0', 150, '2021-04-27T19:10:00'::timestamp, null, 'debug');
+INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
+                VALUES ('Bonita cama de madeira de carvalho', 'Cama feita em madeira bem conservada de 2011', 'cama 2.0', 150, '2022-04-27T19:10:00'::timestamp, 'debug');
 
 INSERT INTO auction (title, description, id, bidding, finish_date, final_user_username, auction_user_username)
                 VALUES ('Cana de pesca antiga', 'Cana hiper mega antiga', 'cana 1.0', 150, '2021-06-27T19:10:00'::timestamp, null, 'marianaLoreto');
@@ -86,54 +93,38 @@ INSERT INTO auction (title, description, id, bidding, finish_date, final_user_us
                 VALUES ('Cana de pesca antiga de madeira', 'Cana hiper mega antiga de madeira', 'cana 2.0', 150, '2021-05-31T19:10:00'::timestamp, null, 'marianaLoreto');
 
 
+INSERT INTO bidding VALUES (150, '2021-05-24T11:13:16'::timestamp, 'cama', 'debug');
+INSERT INTO bidding VALUES (160, '2021-05-25T13:56:32'::timestamp, 'cama', 'debug1');
 
 
-/* Insere os departamentos
+/*ir buscar todos ao bidding, o que gerou a auction e às mensagens*/
+create or replace function notif_bid() returns trigger
+	language plpgsql
+	as $$
+	declare
+		c1 cursor for
+		SELECT auction_user_username 
+		from auction where id=old.id
+		UNION select auction_user_username 
+		from bidding where auction_id=old.id;
 
-INSERT INTO dep VALUES (10, 'Contabilidade', 'Condeixa');
-INSERT INTO dep VALUES (20, 'Investigacao',  'Mealhada');
-INSERT INTO dep VALUES (30, 'Vendas',        'Coimbra');
-INSERT INTO dep VALUES (40, 'Planeamento',   'Montemor');
-*/
+		id varchar(512);
+		message_content varchar(512);
+	begin
 
+		for r in c1
+		loop
+			if (r.auction_user_username!=old.auction_user_username) then
+			SELECT CONCAT(r.auction_user_username, now(), old.id) into id;
+			SELECT CONCAT('Bid has increased in auction ', old.id) into message_content;
+			INSERT INTO mural_msg VALUES(id, message_content , now(), old.id, r.auction_user_username); /*HERE*/
+			end if;
+		end loop;
+	return new;
+	end;
+	$$;
 
-/* Insere os empregrados
- * Note-se  que  como  existe a  restricao  de  o  numero
- * do encarregado ser uma chave estrangeira (que por acaso
- * aponta  para a  chave primaria  da  mesma  tabela)  os
- * empregados  teem  que  ser  inseridos na  ordem certa.
- * Primeiro o presidente (que nao tem superiores)  depois
- * os empregados cujo encarregado e' o presidente e assim
- * sucessivamente.
- *
-
-INSERT INTO emp VALUES(1839, 'Jorge Sampaio',  'Presidente'  ,NULL, '1984-02-11', 890000,  NULL, 10);
-
-INSERT INTO emp VALUES(1566, 'Augusto Reis',   'Encarregado' ,1839, '1985-02-13', 450975,  NULL, 20);
-INSERT INTO emp VALUES(1698, 'Duarte Guedes',  'Encarregado' ,1839, '1991-11-25', 380850,  NULL, 30);
-INSERT INTO emp VALUES(1782, 'Silvia Teles',   'Encarregado' ,1839, '1986-11-03',  279450,  NULL, 10);
-
-INSERT INTO emp VALUES(1788, 'Maria Dias',     'Analista'    ,1566, '1982-11-07',  565000,  NULL, 20);
-INSERT INTO emp VALUES(1902, 'Catarina Silva', 'Analista'    ,1566, '1993-04-13',  435000,  NULL, 20);
-
-INSERT INTO emp VALUES(1499, 'Joana Mendes',   'Vendedor'    ,1698, '1984-10-04',  145600, 56300, 30);
-INSERT INTO emp VALUES(1521, 'Nelson Neves',   'Vendedor'    ,1698, '1983-02-27',  212250, 98500, 30);
-INSERT INTO emp VALUES(1654, 'Ana Rodrigues',  'Vendedor'    ,1698, '1990-12-17',  221250, 81400, 30);
-INSERT INTO emp VALUES(1844, 'Manuel Madeira', 'Vendedor'    ,1698, '1985-04-21',  157800,     0, 30);
-INSERT INTO emp VALUES(1900, 'Tome Ribeiro',   'Continuo'    ,1698, '1994-03-05',   56950,  NULL, 30);
-
-INSERT INTO emp VALUES(1876, 'Rita Pereira',   'Continuo'    ,1788, '1996-02-07',   65100,  NULL, 20);
-INSERT INTO emp VALUES(1934, 'Olga Costa',     'Continuo'    ,1782, '1986-06-22',   68300,  NULL, 10);
-
-INSERT INTO emp VALUES(1369, 'Antonio Silva',  'Continuo'    ,1902, '1996-12-22',  70800,  NULL, 20);
-
-
-
-
-INSERT INTO descontos VALUES (1, 55000, 99999);
-INSERT INTO descontos VALUES (2, 100000, 210000);
-INSERT INTO descontos VALUES (3, 210001, 350000);
-INSERT INTO descontos VALUES (4, 350001, 550000);
-INSERT INTO descontos VALUES (5, 550001, 9999999);
-*/
-
+create trigger notif_bid_trig
+after UPDATE on auction
+for each row
+execute procedure notif_bid();
