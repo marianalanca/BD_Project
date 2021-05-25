@@ -20,6 +20,7 @@ CREATE TABLE auction (
 	id			 varchar(512) UNIQUE NOT NULL,
 	finish_date		 timestamp,
 	bidding		 FLOAT(8) NOT NULL,
+	final_user_username varchar(512),
 	auction_user_username varchar(512) NOT NULL,
 	PRIMARY KEY(id)
 );
@@ -68,13 +69,22 @@ ALTER TABLE history ADD CONSTRAINT history_fk1 FOREIGN KEY (auction_id) REFERENC
 
 /*{ "username": "debug", "password": "pass" }*/
 INSERT INTO auction_user VALUES ('debug', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTk1NTY1NDQsInN1YiI6InBhc3MifQ.rBxKYTw2UPxXjnF4ODsxntTFOisWiHvvZPcwHz-URMs');
+INSERT INTO auction_user VALUES ('marianaLanca', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTk1NTY1NDQsInN1YiI6InBhc3MifQ.rBxKYTw2UPxXjnF4ODsxntTFOisWiHvvZPcwHz-URMs');
+INSERT INTO auction_user VALUES ('marianaLoreto', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTk1NTY1NDQsInN1YiI6InBhc3MifQ.rBxKYTw2UPxXjnF4ODsxntTFOisWiHvvZPcwHz-URMs');
 /*INSERT INTO auction_user VALUES ('Alberto', 't9FrBVvgy');*/
 
-INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
-                VALUES ('Bonita cama de madeira', 'Cama feita em madeira bem conservada de 2010', 'cama', 100, '2021-04-28T20:00:00'::timestamp, 'debug');
+INSERT INTO auction (title, description, id, bidding, finish_date, final_user_username, auction_user_username)
+                VALUES ('Bonita cama de madeira', 'Cama feita em madeira bem conservada de 2010', 'cama', 100, '2021-04-28T20:00:00'::timestamp, null,'debug');
 
-INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
-                VALUES ('Bonita cama de madeira de carvalho', 'Cama feita em madeira bem conservada de 2011', 'cama 2.0', 150, '2021-04-27T19:10:00'::timestamp, 'debug');
+INSERT INTO auction (title, description, id, bidding, finish_date, final_user_username, auction_user_username)
+                VALUES ('Bonita cama de madeira de carvalho', 'Cama feita em madeira bem conservada de 2011', 'cama 2.0', 150, '2021-04-27T19:10:00'::timestamp, null, 'debug');
+
+INSERT INTO auction (title, description, id, bidding, finish_date, final_user_username, auction_user_username)
+                VALUES ('Cana de pesca antiga', 'Cana hiper mega antiga', 'cana 1.0', 150, '2021-06-27T19:10:00'::timestamp, null, 'marianaLoreto');
+
+INSERT INTO auction (title, description, id, bidding, finish_date, final_user_username, auction_user_username)
+                VALUES ('Cana de pesca antiga de madeira', 'Cana hiper mega antiga de madeira', 'cana 2.0', 150, '2021-05-31T19:10:00'::timestamp, null, 'marianaLoreto');
+
 
 
 
