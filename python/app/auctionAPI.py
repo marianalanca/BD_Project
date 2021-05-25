@@ -3,7 +3,7 @@
 # https://www.postgresql.org/docs/9.2/sql-insert.html
 # https://www.psycopg.org/docs/usage.html
 
-#FLASK
+# FLASK
 # https://flask.palletsprojects.com/en/1.1.x/quickstart/
 
 # JWT & AUTHENTICATION
@@ -33,8 +33,9 @@ INSERT_USER = """ INSERT INTO auction_user VALUES (%s, %s) RETURNING username ""
 SELECT_AUCTIONS = " SELECT id, description FROM auction "
 SELECT_USERDATA = """ SELECT username, password  FROM auction_user where username=%s"""
 SELECT_USER = """ SELECT username  FROM auction_user where username=%s"""
-INSERT_AUCTION = """ INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
-                VALUES (%s, %s, %s, %s, %s, %s)"""
+INSERT_AUCTION = """ INSERT INTO auction (title, description, id, bidding, finish_date, final_user_username, auction_user_username)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+
 
 # TODO ORGANIZAR
 # * TRIGGER:
@@ -46,11 +47,11 @@ INSERT_AUCTION = """ INSERT INTO auction (title, description, id, bidding, finis
 @app.route('/user', methods=['POST', 'PUT'])
 def user():
     req = request.get_json()
-    if(request.get_json()!=None and len(req)==2 and ('username' in req.keys()) and ('password' in req.keys())):
+    if request.get_json() is None and len(req) == 2 and ('username' in req.keys()) and ('password' in req.keys()):
         if request.method == 'POST':
             return insertAuctionUser(**req)
         else:
-            return autenticationAuctionUser(**req) # fazer verificação
+            return autenticationAuctionUser(**req)  # fazer verificação
     logger.error(f'{DIV}Wrong Arguments\n')
     return {"error": "Wrong arguments"}
 
@@ -58,7 +59,7 @@ def user():
 @app.route('/leilao', methods=['POST'])
 def leilao():
     args = request.get_json()
-    if args!=None and len(args)==5:
+    if args != None and len(args) == 5:
         return createAuction(**args)
     return {"erro": "Wrong number of arguments"}
 
@@ -66,16 +67,16 @@ def leilao():
 @app.route('/ativ/', methods=['GET'])
 def ativ():
     try:
-        if (authenticate(request.args['token'])):
+        if authenticate(request.args['token']):
             return activity_auction(decode(request.args['token']))
         else:
             return {"error": "Invalid authentication"}
     except:
-        return {"error":  "Invalid authentication"}
+        return {"error": "Invalid authentication"}
 
 
 # TODO
-@app.route('/leilao/<leilaoId>', methods=['GET','PUT'])
+@app.route('/leilao/<leilaoId>', methods=['GET', 'PUT'])
 def leilaoId(leilaoId):
     try:
         if (authenticate(request.args['token'])):
@@ -86,10 +87,10 @@ def leilaoId(leilaoId):
         else:
             return {"error": "Invalid authentication"}
     except:
-        return {"error":  "Invalid authentication"}
+        return {"error": "Invalid authentication"}
 
 
-@app.route('/leiloes/<keyword>', methods=['GET','PUT'])
+@app.route('/leiloes/<keyword>', methods=['GET', 'PUT'])
 def leiloesK(keyword):
     try:
         if authenticate(request.args['token']):
@@ -125,7 +126,7 @@ def leiloes():
 
                 return jsonify(auctions)
             except:
-                return {"error":"Something went wrong"}
+                return {"error": "Something went wrong"}
         else:
             return {"error": "Invalid authentication"}
     except:
@@ -152,7 +153,7 @@ def sendMural(leilaoId):
         else:
             return {"error": "Invalid authentication"}
     except Exception as e:
-        return {"error": '{m}'.format(m = str(e))}
+        return {"error": '{m}'.format(m=str(e))}
 
 
 @app.route('/messageBox', methods=['GET'])
@@ -172,7 +173,7 @@ def match_password(username, password):
     cur = conn.cursor()
     cur.execute(SELECT_USERDATA, (username,))
     try:
-        if password!=decode(cur.fetchone()[1]):
+        if password != decode(cur.fetchone()[1]):
             cur.close()
             return False
     except:
@@ -221,10 +222,11 @@ def authenticate(auth_token):
         return False
     return False
 
+
 # FUNCTIONALITIES
 
 def insertAuctionUser(username, password):
-    try :
+    try:
         conn = db_connection()
         # create a cursor
         cur = conn.cursor()
@@ -241,7 +243,7 @@ def insertAuctionUser(username, password):
         logger.error(f'{DIV}{error_message}\n')
         return {"erro": error_message}
     except Exception as e:
-        error = '{m}'.format(m = str(e))
+        error = '{m}'.format(m=str(e))
         logger.error(f'{DIV}{error}\n')
         return {"erro": error}
     finally:
@@ -282,7 +284,7 @@ def createAuction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
         if today > date:
             return {"erro": 'Data incorreta'}  # colocar data default?
 
-        values = (titulo, descricao, artigoId, precoMinimo, date, username)
+        values = (titulo, descricao, artigoId, precoMinimo, date, None, username)
         cur.execute(INSERT_AUCTION, values)
 
         conn.commit()
@@ -294,7 +296,7 @@ def createAuction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
 
 
 def changeDetails(leilaoId, definitions):
-    if len(definitions)!=0:
+    if len(definitions) != 0:
         try:
             conn = db_connection()
             cur = conn.cursor()
@@ -311,7 +313,7 @@ def changeDetails(leilaoId, definitions):
             if 'description' in definitions.keys():
                 description = definitions['description']
 
-            if title==old_data[0] and description==old_data[1]:
+            if title == old_data[0] and description == old_data[1]:
                 conn.rollback()
                 logger.error(f'{DIV}Nothing has changed\n')
                 return {"error": "Nothing has changed"} 
@@ -393,7 +395,7 @@ def activity_auction(username):
         result = cur.fetchall()
 
         if result is not None:
-            return jsonify([{"leilaoId": x[0], "title": x[1],"descricao": x[2]} for x in result])
+            return jsonify([{"leilaoId": x[0], "title": x[1], "descricao": x[2]} for x in result])
         else:
             return {"error": 'not found'}
 
@@ -412,9 +414,9 @@ def bid(auctionID, bidValue, username):
 
         select_auction = """ SELECT bidding, finish_date FROM auction where id=%s"""
         cur.execute(select_auction, (auctionID,))
-        auction = cur.fetchall()
+        auction = cur.fetchone()
 
-        if auction == None:
+        if auction is None:
             logger.error(f'{DIV}Auction ID does not exist')
             return {"erro": 'Auction ID does not exist'}
 
@@ -439,8 +441,8 @@ def bid(auctionID, bidValue, username):
             return {"erro": 'Could not convert price to int'}
 
         # update bidding value in auction
-        select_auction = """ UPDATE auction SET bidding=%s WHERE id=%s"""
-        cur.execute(select_auction, (bidValue, auctionID,))
+        select_auction = """ UPDATE auction SET bidding=%s, final_user_username=%s WHERE id=%s"""
+        cur.execute(select_auction, (bidValue, username, auctionID,))
 
         # Insert into bidding table
         insert_bidding = """ INSERT INTO bidding VALUES (%s, %s, %s, %s)"""
@@ -449,10 +451,12 @@ def bid(auctionID, bidValue, username):
         conn.commit()
         logger.info(f'{DIV}Successful bid')
         return {"Status": "Successful bid"}
+
     except Exception as e:
         error = '{m}'.format(m=str(e))
         logger.error(f'{DIV}{error}')
         return {"erro": error}
+
     finally:
         cur.close()
 
@@ -478,6 +482,46 @@ def sendMessageMural(message, auction_ID, user):
         error = '{m}'.format(m=str(e))
         logger.error(f'{DIV}{error}')
         return {"erro": error}
+    finally:
+        cur.close()
+
+
+# TODO TEST
+def getAuctionWinner(auctionID):
+    try:
+        conn = db_connection()
+        cur = conn.cursor()
+
+        select_auction = """SELECT  finish_date, final_user_username FROM auction where auction_id=%s"""
+        cur.execute(select_auction, (auctionID,))
+        possible_winner = cur.fetchone()
+
+        if possible_winner is None:
+            logger.error(f'{DIV}Auction ID does not exist')
+            return {"erro": 'Auction ID does not exist'}
+
+        try:
+
+            atual_date = datetime.datetime.now()
+            date = possible_winner[0][0]
+            # logger.info(f'{type(atual_date)} {atual_date} {date}')
+
+            if atual_date < date:
+                logger.error('The auction is still opened, there is no winner')
+                return {"error": "The auction is still opened, there is no winner"}
+            else:
+                winner = possible_winner[0][1]
+
+                if winner is None:
+                    logger.error('There is no winner')
+                    return {"error": "There is no winner"}
+
+                return {"Status": winner}
+
+        except:
+            logger.error(f'{DIV}Could not convert date to right format ')
+            return {"error": "Could not convert date to right format"}
+
     finally:
         cur.close()
 
@@ -511,24 +555,14 @@ def getSenders(auction_ID, cur):
     return [r[0] for r in cur.fetchall()]
 
 
-def getAuctionWinner(auction, cur):
-    try :
-        # podia também ter usado o all (PL5) mas parece menos eficiente
-        SELECT_AUCTIONS = "  SELECT auction_user_username FROM bidding where auction_id='cama' limit 1"
-        cur.execute(SELECT_AUCTIONS)
-        return cur.fetchall()
-    finally:
-        cur.close()
-
-
 # DB CONNECTION
 def db_connection():
     db = psycopg2.connect(**params)
     return db
 
+
 # MAIN
 if __name__ == "__main__":
-
     # Set up the logging
     logging.basicConfig(filename="logs/log_file.log")
     logger = logging.getLogger('logger')
@@ -538,15 +572,11 @@ if __name__ == "__main__":
 
     # create formatter
     formatter = logging.Formatter('%(asctime)s [%(levelname)s]:  %(message)s',
-                              '%H:%M:%S')
-                              # "%Y-%m-%d %H:%M:%S") # not using DATE to simplify
+                                  '%H:%M:%S')
+    # "%Y-%m-%d %H:%M:%S") # not using DATE to simplify
     ch.setFormatter(formatter)
     logger.addHandler(ch)
 
-
-
     logger.info(DIV + "API v1.0 online: http://localhost:8080/\n")
 
-
     app.run(host="0.0.0.0", debug=True, threaded=True)
-
