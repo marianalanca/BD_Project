@@ -37,10 +37,6 @@ INSERT_AUCTION = """ INSERT INTO auction (title, description, id, bidding, finis
 
 
 # TODO ORGANIZAR
-# * TRIGGER:
-#   Quando se faz uma bid, acciona 2 triggers: um para alterar o valor do bid e outro para adicionar a mensagem a dizer que o valor de bid foi alterado
-#   Ter outro para quando acaba? -> adicionar winner ao
-# * Script para correr vários requests ao mesmo tempo
 
 
 @app.route('/user', methods=['POST', 'PUT'])
@@ -496,46 +492,6 @@ def sendMessageMural(message, auction_ID, user):
         cur.close()
 
 
-# TODO TEST
-def getAuctionWinner(auctionID):
-    try:
-        conn = db_connection()
-        cur = conn.cursor()
-
-        select_auction = """SELECT  finish_date, final_user_username FROM auction where auction_id=%s"""
-        cur.execute(select_auction, (auctionID,))
-        possible_winner = cur.fetchone()
-
-        if possible_winner is None:
-            logger.error(f'{DIV}Auction ID does not exist')
-            return {"erro": 'Auction ID does not exist'}
-
-        try:
-
-            atual_date = datetime.datetime.now()
-            date = possible_winner[0][0]
-            # logger.info(f'{type(atual_date)} {atual_date} {date}')
-
-            if atual_date < date:
-                logger.error('The auction is still opened, there is no winner')
-                return {"error": "The auction is still opened, there is no winner"}
-            else:
-                winner = possible_winner[0][1]
-
-                if winner is None:
-                    logger.error('There is no winner')
-                    return {"error": "There is no winner"}
-
-                return {"Status": winner}
-
-        except:
-            logger.error(f'{DIV}Could not convert date to right format ')
-            return {"error": "Could not convert date to right format"}
-
-    finally:
-        cur.close()
-
-
 def messageBox(user):
     try:
         conn = db_connection()
@@ -552,7 +508,7 @@ def messageBox(user):
 
         conn.commit()
         logger.info(f'{DIV}{messages}')
-        return jsonify(messages)
+        return jsonify({'Message Box': messages})
     except Exception as e:
         error = '{m}'.format(m=str(e))
         logger.error(f'{DIV}{error}')
