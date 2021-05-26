@@ -3,7 +3,6 @@
 # https://www.postgresql.org/docs/9.2/sql-insert.html
 # https://www.psycopg.org/docs/usage.html
 
-# FLASK
 # https://flask.palletsprojects.com/en/1.1.x/quickstart/
 
 # JWT & AUTHENTICATION
@@ -47,7 +46,7 @@ INSERT_AUCTION = """ INSERT INTO auction (title, description, id, bidding, finis
 @app.route('/user', methods=['POST', 'PUT'])
 def user():
     req = request.get_json()
-    if request.get_json() is None and len(req) == 2 and ('username' in req.keys()) and ('password' in req.keys()):
+    if request.get_json() is not None and len(req) == 2 and ('username' in req.keys()) and ('password' in req.keys()):
         if request.method == 'POST':
             return insertAuctionUser(**req)
         else:
@@ -532,15 +531,17 @@ def messageBox(user):
         conn.set_session(readonly=True)
         cur = conn.cursor()
 
-        select_message = """ SELECT content, sent_date FROM mural_msg WHERE auction_user_username=%s """ 
+        select_message = """ SELECT content, sent_date, auction_id FROM mural_msg WHERE auction_user_username=%s """ 
 
         cur.execute(select_message, (user,))
 
-        res = cur.fetchall()
-        
+        messages = []
+        for message in cur.fetchall():
+            messages.append({"Content": message[0], "Date": message[1], "Auction": message[2]})
+
         conn.commit()
-        logger.info(f'{DIV}{res}')
-        return jsonify(res)
+        logger.info(f'{DIV}{messages}')
+        return jsonify(messages)
     except Exception as e:
         error = '{m}'.format(m=str(e))
         logger.error(f'{DIV}{error}')
