@@ -369,9 +369,20 @@ def consult_auction(leilaoId):
         result = cur.fetchall()
 
         if result is not None:
-            # INCOMPLETO - falta as mensagens e o historico (secalhar nem precisa destes detalhes todos - disuctir isto)
+
+            command = f"""SELECT DISTINCT content FROM mural_msg WHERE auction_id = '{leilaoId}' """
+            cur.execute(command)
+
+            messages = cur.fetchall()
+
+            command = f"""SELECT  price, bid_date, auction_user_username FROM bidding WHERE auction_id = '{leilaoId}' """
+            cur.execute(command)
+
+            biddings = cur.fetchall()
+
             dict_result = {"leilaoId": result[0][2], "titulo": result[0][0], "descricao": result[0][1],
-                           "data": result[0][3], "licitacao": result[0][4], "vendedor": result[0][5]}
+                           "data": result[0][3], "licitacao": result[0][4], "vendedor": result[0][5],
+                           "mensagens": messages, "licitacoes": biddings}
             return jsonify(dict_result)
         else:
             return {"error": 'not found'}
@@ -386,9 +397,9 @@ def activity_auction(username):
         conn.set_session(readonly=True)
         cur = conn.cursor()
 
-        # INCOMPLETO
-        # OR  (SELECT id_auction FROM bidding WHERE auction_user_username = '{username}')
-        command = f"""SELECT id, title, description FROM auction WHERE auction_user_username = '{username}'"""
+        command = f"""SELECT id, title, description FROM auction WHERE auction_user_username = '{username}'
+                        OR id = (SELECT auction_id FROM bidding WHERE auction_user_username = '{username}') 
+                        OR id = (SELECT DISTINCT auction_id FROM mural_msg WHERE auction_user_username = '{username}')"""
         cur.execute(command)
 
         result = cur.fetchall()
