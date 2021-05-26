@@ -97,6 +97,14 @@ INSERT INTO bidding VALUES (150, '2021-05-24T11:13:16'::timestamp, 'cama', 'debu
 INSERT INTO bidding VALUES (160, '2021-05-25T13:56:32'::timestamp, 'cama', 'debug1');
 
 
+/*INDICES*/
+create index bidding_value on auction (bidding);
+create index auction_aux on auction (id);
+create index user_aux on auction_user (username);
+create index bidding_aux on bidding (auction_id, auction_user_username);
+create index message_aux on mural_msg (auction_id, auction_user_username);
+
+
 /*ir buscar todos ao bidding, o que gerou a auction e às mensagens*/
 create or replace function notif_bid() returns trigger
 	language plpgsql
