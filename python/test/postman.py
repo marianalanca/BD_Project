@@ -61,8 +61,9 @@ def authenticateUser(username, password):
     return code_200(req) and contains(req, 'authToken')
 
 
-def createAuction(auction_id, authToken, bid):
-    return
+def createAuction(authToken):
+    req = requests.put(f'{URL}/leilao?token={authToken}')
+    return code_200(req) # and contains(req, 'Create Auctions')
 
 
 def listAllAuctions(authToken):
@@ -70,12 +71,18 @@ def listAllAuctions(authToken):
     return code_200(req) and type(req.json()) is list
 
 
-def searchAuctions(auction_id, authToken, bid):
-    return
+def searchAuctions(keyword, authToken):
+    req = requests.put(f'{URL}/leiloes/{keyword}?token={authToken}')
+    return code_200(req) # and contains(req, 'Search Auctions')
 
 
-def searchAuctionDetails(auction_id, authToken, bid):
-    return
+def searchAuctionDetails(auction_id, authToken):
+    req = requests.get(f'{URL}/leilao/{auction_id}?token={authToken}')
+    return code_200(req) # and contains(req, 'Auction Details')
+
+def activity(authToken):
+    req = requests.get(f'{URL}/ativ/?token={authToken}')
+    return code_200(req) # and contains(req, 'Activity')
 
 #TODO CORRECT
 def bid(auction_id, authToken, bid):
@@ -343,6 +350,32 @@ def testListMessages():
     print (f'Passed {passed_var}/{total}; Failed {fail}/{total}')
 
     print('-- LIST MESSAGES TEST END --')
+
+# SEARCH AUCTIONS 
+
+def search_auctions():
+    global auths
+
+    random_words = ['cama', 'cana', 'bonita', 'velha', 'pesca', 'antiga', 'teste', 'random', 'word']
+
+    print('-- SEARCH AUCTIONS WITH KEYWORD --')
+    for i in range(10):
+        user = random.choice(auths)
+        keyword = random.choice(random_words)
+        if searchAuctions(keyword, user['auth']):
+            passed('FOUND - ' + keyword)
+        else:
+            failed('NOT FOUND - ' + keyword)
+
+    print('-- SEARCH AUCTIONS DETAILS --')
+    for i in range(10):
+        user = random.choice(auths)
+        auction = random.choice(auctions)
+        keyword = random.choice(random_words)
+        if searchAuctionDetails(auction['auctionID'], user['auth']):
+            passed('FOUND - ' + keyword)
+        else:
+            failed('NOT FOUND - ' + keyword)
 
 
 if __name__=='__main__':
