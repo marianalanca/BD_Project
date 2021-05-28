@@ -389,12 +389,22 @@ def activity_auction(username):
         conn.set_session(readonly=True)
         cur = conn.cursor()
 
-        command = f"""SELECT id, title, description FROM auction WHERE auction_user_username = '{username}'
-                        OR id = (SELECT auction_id FROM bidding WHERE auction_user_username = '{username}') 
-                        OR id = (SELECT DISTINCT auction_id FROM mural_msg WHERE auction_user_username = '{username}')"""
+        command = f"""SELECT id, title, description FROM auction WHERE auction_user_username = '{username}'"""
         cur.execute(command)
 
         result = cur.fetchall()
+
+        command = f"""SELECT id, title, description FROM auction JOIN bidding on id=auction_id WHERE bidding.auction_user_username = '{username}'"""
+        cur.execute(command)
+
+        aux = cur.fetchall()
+        result.extend(aux)
+
+        command = f"""SELECT id, title, description FROM auction JOIN mural_msg ON id=auction_id WHERE mural_msg.auction_user_username = '{username}'"""
+        cur.execute(command)
+
+        aux = cur.fetchall()
+        result.extend(aux)
 
         if result is not None:
             return jsonify([{"leilaoId": x[0], "title": x[1], "descricao": x[2]} for x in result])
