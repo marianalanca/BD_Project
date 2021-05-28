@@ -1,5 +1,6 @@
 import requests
 from multiprocessing import Process
+from threading import Event, Lock, Thread
 import json
 
 URL = 'http://localhost:8080'
@@ -16,6 +17,10 @@ class bcolors:
 
 import string
 import random
+
+passed_var = 0
+fail = 0
+total = 0
 
 auths = []
 auctions = []
@@ -37,7 +42,8 @@ def contains(request, *name):
 
 def randomString(size):
     letters = string.ascii_letters
-    return ''.join(random.choice(letters) for i in range(size))
+    str_final = str(''.join(random.choice(letters) for i in range(size)))
+    return str_final
 
 #TODO CORRECT
 def createUser(username, password):
@@ -58,11 +64,10 @@ def authenticateUser(username, password):
 def createAuction(auction_id, authToken, bid):
     return
 
-#TODO 
-def listAuctions(auction_id, authToken, bid):
+
+def listAllAuctions(authToken):
     req = requests.get(f'{URL}/leiloes?token={authToken}')
-    return code_200(req)# and contains(req, 'Status')
-    # test if array
+    return code_200(req) and type(req.json()) is list
 
 
 def searchAuctions(auction_id, authToken, bid):
@@ -72,7 +77,7 @@ def searchAuctions(auction_id, authToken, bid):
 def searchAuctionDetails(auction_id, authToken, bid):
     return
 
-#TODO 
+#TODO CORRECT
 def bid(auction_id, authToken, bid):
     req = requests.get(f'{URL}/licitar/{auction_id}/{bid}?token={authToken}')
     return code_200(req) and contains(req, 'Status')
@@ -81,15 +86,15 @@ def bid(auction_id, authToken, bid):
 def editAuction(auction_id, authToken, bid):
     return
 
-#TODO 
-def sendMessage(authToken, message, auctionID):
-    req = requests.post(f'{URL}/mural/{auctionID}?token={authToken}')
-    return code_200(req) and contains(req, 'Message Box')
 
-#TODO 
+def sendMessage(authToken, auctionID, message):
+    req = requests.post(f'{URL}/mural/{auctionID}?token={authToken}', json={"message": message})
+    return code_200(req) and contains(req, 'Status')
+
+ 
 def messageBox(authToken):
     req = requests.get(f'{URL}/messageBox?token={authToken}')
-    return code_200(req) and contains(req, 'Status')
+    return code_200(req) and contains(req, 'Message Box')
 
 
 # MESSAGES
@@ -106,6 +111,7 @@ def failed(message):
 # TESTING
 
 
+# CREATE USER
 def createUsers():
     for _ in range(20):
         user = randomString(5)
@@ -120,7 +126,7 @@ def testCreateUsers():
     print('-- CREATE USERS TEST --')
 
     for _ in range(5):
-        q = Process(target=createUsers)
+        q = Thread(target=createUsers)
         q.start()
         users_aux.append(q)
     for p in users_aux:
@@ -128,6 +134,8 @@ def testCreateUsers():
 
     print('-- CREATE USERS TEST END --')
 
+
+# AUTHENTICATE
 
 def testAuthenticateUsersPASS():
     global auths
@@ -177,18 +185,164 @@ def testAuthenticateUsersFAIL():
     return
 
 
+# BID
+
 def bids():
-    for _ in range(20):
+    global fail
+    global total
+    global passed_var
+    for _ in range(80):
         auction = random.choice(auctions)
         user = random.choice(auths)
+        total +=1
         new_bid = random.randint(auction['minimum'], auction['minimum'] + 100)
         if bid(auction['auctionID'], user['auth'], new_bid):
             passed('Succeded to bid ' + auction['auctionID'] + ' ' + user['username'] + ' ' + str(new_bid))
+            passed_var += 1
             auction['minimum'] = new_bid + 1
         else:
             failed('Failed to bid ' + auction['auctionID'] + ' ' + user['username'] + ' ' + str(new_bid))
+            fail += 1
 
 
+def testBid():
+    global fail
+    global total
+    global passed_var
+    auc = []
+
+    total = fail = passed_var = 0
+    
+    print('-- BID TEST --')
+
+    for _ in range(20):
+        q = Thread(target=bids)
+        q.start()
+        auc.append(q)
+    for p in auc:
+        p.join()
+
+    print (f'Passed {passed_var}/{total}; Failed {fail}/{total}')
+
+    print('-- BID TEST END --')
+
+
+# List Auctions
+
+def listAuctions():
+    global fail
+    global total
+    global passed_var
+    for _ in range(20):
+        user = random.choice(auths)
+        total +=1
+        if listAllAuctions( user['auth']):
+            passed('Succeded to list all auctions')
+            passed_var += 1
+        else:
+            failed('Failed to list all auctions')
+            fail += 1
+
+
+def testListAuctions():
+    global fail
+    global total
+    global passed_var
+    auc = []
+
+    total = fail = passed_var = 0
+    
+    print('-- LIST AUCTIONS TEST --')
+
+    for _ in range(5):
+        q = Thread(target=listAuctions)
+        q.start()
+        auc.append(q)
+    for p in auc:
+        p.join()
+
+    print (f'Passed {passed_var}/{total}; Failed {fail}/{total}')
+
+    print('-- LIST AUCTIONS TEST END --')
+
+
+# SEND MESSAGES
+
+def sendMenssages():
+    global fail
+    global total
+    global passed_var
+    for _ in range(20):
+        user = random.choice(auths)
+        auction = random.choice(auctions)
+        total +=1
+        if sendMessage(user['auth'], auction['auctionID'], randomString(random.randint(10, 500))):
+            passed('Succeded to send message')
+            passed_var += 1
+        else:
+            failed('Failed to send message')
+            fail += 1
+
+
+def testSendMenssages():
+    global fail
+    global total
+    global passed_var
+    auc = []
+
+    total = fail = passed_var = 0
+    
+    print('-- SEND MESSAGES TEST --')
+
+    for _ in range(10):
+        q = Thread(target=sendMenssages)
+        q.start()
+        auc.append(q)
+    for p in auc:
+        p.join()
+
+    print (f'Passed {passed_var}/{total}; Failed {fail}/{total}')
+
+    print('-- SEND MESSAGES TEST END --')
+
+
+# MESSAGE BOX  
+
+def listMessages():
+    global fail
+    global total
+    global passed_var
+    for _ in range(20):
+        user = random.choice(auths)
+        total +=1
+        if messageBox(user['auth']):
+            #passed('Succeded to list all messages from message box')
+            passed_var += 1
+        else:
+            #failed('Failed to list all messages from message box')
+            fail += 1
+
+
+def testListMessages():
+    global fail
+    global total
+    global passed_var
+    auc = []
+
+    total = fail = passed_var = 0
+    
+    print('-- LIST MESSAGES TEST --')
+
+    for _ in range(10):
+        q = Thread(target=listMessages)
+        q.start()
+        auc.append(q)
+    for p in auc:
+        p.join()
+
+    print (f'Passed {passed_var}/{total}; Failed {fail}/{total}')
+
+    print('-- LIST MESSAGES TEST END --')
 
 
 if __name__=='__main__':
@@ -201,16 +355,17 @@ if __name__=='__main__':
 
     
     print('-- TESTING --')
+    try :
+        '''testCreateUsers()
+        testAuthenticateUsersPASS()
+        testAuthenticateUsersFAIL()
+        testListAuctions()'''
+        # testBid()
+        # testSendMenssages()
+        testListMessages()
+    except:
+        print('Something went wrong')
 
-    # testCreateUsers()
-    # testAuthenticateUsersPASS()
-    # testAuthenticateUsersFAIL()
-
-    bids()
-
-    # print(auths)
-
-    # no final guarda os users
     with open('users_data.json', 'w') as outfile:
         json.dump(auths, outfile, indent=4)
 

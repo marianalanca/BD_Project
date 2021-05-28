@@ -40,7 +40,6 @@ INSERT_AUCTION = """ INSERT INTO auction (title, description, id, bidding, finis
 def user():
     req = request.get_json()
     if contains(request, 2, 'username', 'password'):
-        # if request.get_json() is not None and len(req) == 2 and ('username' in req.keys()) and ('password' in req.keys()):
         if request.method == 'POST':
             return insertAuctionUser(**req)
         else:
@@ -97,11 +96,10 @@ def leiloesK(keyword):
         return {"error": "Invalid authentication"}
 
 
-# TODO TEST
+# TODO passar para funcao
 @app.route('/leiloes', methods=['GET'])
 def leiloes():
     try:
-        # TODO passar para uma função
         if (authenticate(request.args['token'])):
             try:
                 conn = db_connection()
@@ -140,9 +138,12 @@ def licitar(leilaoId, licitacao):
 @app.route('/mural/<leilaoId>', methods=['POST'])
 def sendMural(leilaoId):
     try:
-        if (authenticate(request.args['token'])):
-            message = request.get_json()['message']
-            return sendMessageMural(message, leilaoId, decode(request.args['token']))
+        if authenticate(request.args['token']):
+            if contains(request, 1, 'message'):
+                message = request.get_json()['message']
+                return sendMessageMural(message, leilaoId, decode(request.args['token']))
+            else: 
+                return {"error": "Wrong arguments"}
         else:
             return {"error": "Invalid authentication"}
     except Exception as e:
@@ -436,7 +437,6 @@ def bid(auctionID, bidValue, username):
             return {"erro": 'Auction ID does not exist'}
 
         bid_date = datetime.datetime.now()
-        # logger.info(f'{type(bid_date)} {bid_date} {auction[0][1]}')
         date = auction[0][1]
         
 
@@ -486,10 +486,11 @@ def sendMessageMural(message, auction_ID, user):
 
         insert_message = """ INSERT INTO mural_msg VALUES(%s, %s, %s, %s, %s); """ 
 
-        for receiver in getSenders(auction_ID, cur):
-            cur.execute(insert_message, (f"{receiver}_{auction_ID}_{msg_time}", message, msg_time, auction_ID, receiver))
-
         cur.execute(insert_message, (f"{user}_{auction_ID}_{msg_time}", message, msg_time, auction_ID, user))
+
+        for receiver in getSenders(auction_ID, cur):
+            if receiver!=user:
+                cur.execute(insert_message, (f"{receiver}_{auction_ID}_{msg_time}", message, msg_time, auction_ID, receiver))
 
         conn.commit()
         logger.info(f'{DIV}Message sent successfully')
