@@ -147,6 +147,17 @@ def message():
         return {"error": "Invalid authentication"}
 
 
+@app.route('/finish', methods=['GET'])
+def finishEndpoint():
+    try:
+        if (authenticate(request.args['token'])):
+            return finish()
+        else:
+            return {"error": "Invalid authentication"}
+    except:
+        return {"error": "Invalid authentication"}
+
+
 def match_password(username, password):
     conn = db_connection()
     conn.set_session(readonly=True)
@@ -538,6 +549,10 @@ def listAllAuctions():
         return jsonify(auctions)
     except:
         return {"error": "Something went wrong"}
+
+
+def finish():
+    return 
 
 
 # DB CONNECTION
