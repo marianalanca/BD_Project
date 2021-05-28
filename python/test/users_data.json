@@ -1,0 +1,57 @@
+[
+    {
+        "username": "debug",
+        "password": "pass",
+        "auth": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjIxMzkxMTEsInN1YiI6ImRlYnVnIn0.t3jrsMUXom5FBGsDutNwhMq3J0of75LzKIvbo38poJY"
+    },
+    {
+        "username": "debug1",
+        "password": "pass",
+        "auth": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjIxMzkxMTEsInN1YiI6ImRlYnVnMSJ9.YvXiQzMTdJhuqPQdqOg2ya4-mPlON1l5k8MgkJLrTcY"
+    },
+    {
+        "username": "debug2",
+        "password": "pass",
+        "auth": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjIxMzkxMTEsInN1YiI6ImRlYnVnMiJ9.y8SZWDIMzfxbx6uw2PNy6q766xIpw2rzBVVN3bscANk"
+    },
+    {
+        "username": "debug3",
+        "password": "pass",
+        "auth": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjIxMzkxMTEsInN1YiI6ImRlYnVnMyJ9.73HSSnbHJF6jPjDpzCmuLBqCyzJhZGEMmDQRtqU5zUI"
+    },
+    {
+        "username": "debug4",
+        "password": "pass",
+        "auth": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjIxMzkxMTEsInN1YiI6ImRlYnVnNCJ9.Vr3iMC6pv0MGSSfDpEiVimVfipPJ5QIL1QTWJcuwcs4"
+    },
+    {
+        "username": "debug5",
+        "password": "pass",
+        "auth": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjIxMzkxMTIsInN1YiI6ImRlYnVnNSJ9.d-ihBS0tPW4CmcWz45GfeUyNhkHoNJrQy91-dgXP6B4"
+    },
+    {
+        "username": "debug6",
+        "password": "pass",
+        "auth": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjIxMzkxMTIsInN1YiI6ImRlYnVnNiJ9.eiKcJ3z0HnjyyXtKR7XgU1STMtPuXOYpd-QFF5TSH-A"
+    },
+    {
+        "username": "debug7",
+        "password": "pass",
+        "auth": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjIxMzkxMTIsInN1YiI6ImRlYnVnNyJ9.OAFYsm73QOnusvrkQd838674SJyhKG-N4S-7I-L7yxE"
+    },
+    {
+        "username": "debug8",
+        "password": "pass",
+        "auth": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjIxMzkxMTIsInN1YiI6ImRlYnVnOCJ9.lM2ja-EcYfsWOJSWuUAYJthtKNE9QcjnXW4apx_41js"
+    },
+    {
+        "username": "debug9",
+        "password": "pass",
+        "auth": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjIxMzkxMTIsInN1YiI6ImRlYnVnOSJ9.AWlTW8Qo9YHHv1-BqOYL4OIR11-FKyEuSTHVhTQNBbo"
+    },
+    {
+        "username": "debug10",
+        "password": "pass",
+        "auth": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjIxMzkxMTIsInN1YiI6ImRlYnVnMTAifQ.MZ1T1fj0zHG280cYu1PYs7wCq2LpGU4GtMHVouVXMVg"
+    }
+]

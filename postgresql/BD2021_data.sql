@@ -92,6 +92,9 @@ INSERT INTO auction (title, description, id, bidding, finish_date, final_user_us
 INSERT INTO auction (title, description, id, bidding, finish_date, final_user_username, auction_user_username)
                 VALUES ('Cana de pesca antiga de madeira', 'Cana hiper mega antiga de madeira', 'cana 2.0', 150, '2021-05-31T19:10:00'::timestamp, null, 'marianaLoreto');
 
+INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_username)
+                VALUES ('Dente de Trex', 'Dente de Trex super fixe! mais velho do que todos nós', 'dente dinossauro', 1000, '2021-05-28T19:10:00'::timestamp, 'debug3');
+
 
 INSERT INTO bidding VALUES (150, '2021-05-24T11:13:16'::timestamp, 'cama', 'debug');
 INSERT INTO bidding VALUES (160, '2021-05-25T13:56:32'::timestamp, 'cama', 'debug1');

@@ -36,13 +36,11 @@ INSERT_AUCTION = """ INSERT INTO auction (title, description, id, bidding, finis
                 VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
 
-# TODO ORGANIZAR
-
-
 @app.route('/user', methods=['POST', 'PUT'])
 def user():
     req = request.get_json()
-    if request.get_json() is not None and len(req) == 2 and ('username' in req.keys()) and ('password' in req.keys()):
+    if contains(request, 2, 'username', 'password'):
+        # if request.get_json() is not None and len(req) == 2 and ('username' in req.keys()) and ('password' in req.keys()):
         if request.method == 'POST':
             return insertAuctionUser(**req)
         else:
@@ -218,7 +216,18 @@ def authenticate(auth_token):
     return False
 
 
+def contains(request, expected_params_num, *parameters):
+    body = request.get_json()
+    if body is not None and len(body) != expected_params_num:
+        return False
+    for parameter in parameters:
+        if parameter not in body.keys():
+            return False
+    return True
+
+
 # FUNCTIONALITIES
+
 
 def insertAuctionUser(username, password):
     try:
@@ -313,7 +322,7 @@ def changeDetails(leilaoId, definitions):
                 logger.error(f'{DIV}Nothing has changed\n')
                 return {"error": "Nothing has changed"} 
 
-            update_auction = """ UPDATE auction set title=&s, description=%s where id=%s"""
+            update_auction = """ UPDATE auction set title=%s, description=%s where id=%s"""
             cur.execute(update_auction, (title, description, leilaoId,))
 
             conn.commit()
@@ -420,15 +429,16 @@ def bid(auctionID, bidValue, username):
 
         select_auction = """ SELECT bidding, finish_date FROM auction where id=%s"""
         cur.execute(select_auction, (auctionID,))
-        auction = cur.fetchone()
+        auction = cur.fetchall()
 
-        if auction is None:
+        if auction is None or len(auction) == 0:
             logger.error(f'{DIV}Auction ID does not exist')
             return {"erro": 'Auction ID does not exist'}
 
         bid_date = datetime.datetime.now()
+        # logger.info(f'{type(bid_date)} {bid_date} {auction[0][1]}')
         date = auction[0][1]
-        logger.info(f'{type(bid_date)} {bid_date} {date}')
+        
 
         try:
             if bid_date > date:
