@@ -351,6 +351,7 @@ def testListMessages():
 
     print('-- LIST MESSAGES TEST END --')
 
+
 # SEARCH AUCTIONS 
 
 def search_auctions():
@@ -392,10 +393,10 @@ if __name__=='__main__':
         '''testCreateUsers()
         testAuthenticateUsersPASS()
         testAuthenticateUsersFAIL()
-        testListAuctions()'''
-        # testBid()
-        # testSendMenssages()
-        testListMessages()
+        testListAuctions()
+        testBid()
+        testSendMenssages()
+        testListMessages()'''
     except:
         print('Something went wrong')
 

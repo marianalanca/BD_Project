@@ -51,11 +51,12 @@ def user():
 @app.route('/leilao', methods=['POST'])
 def leilao():
     args = request.get_json()
-    if args != None and len(args) == 5:
+    if contains(request, 5, 'artigoId', 'precoMinimo', 'titulo' , 'descricao', 'data_de_fim'):
         return createAuction(**args)
-    return {"erro": "Wrong number of arguments"}
+    return {"erro": "Wrong arguments"}
 
 
+# TODO VER
 @app.route('/ativ/', methods=['GET'])
 def ativ():
     try:
@@ -67,7 +68,6 @@ def ativ():
         return {"error": "Invalid authentication"}
 
 
-# TODO
 @app.route('/leilao/<leilaoId>', methods=['GET', 'PUT'])
 def leilaoId(leilaoId):
     try:
@@ -75,7 +75,10 @@ def leilaoId(leilaoId):
             if request.method == 'GET':
                 return consult_auction(leilaoId)
             else:  # PUT
-                return changeDetails(leilaoId, request.get_json())
+                if contains(request, 1, 'title') or contains(request, 1, 'description') or contains(request, 2, 'title', 'description'):
+                    return changeDetails(leilaoId, request.get_json())
+                else:
+                    return {"error": "Invalid arguments"}
         else:
             return {"error": "Invalid authentication"}
     except:
@@ -96,28 +99,11 @@ def leiloesK(keyword):
         return {"error": "Invalid authentication"}
 
 
-# TODO passar para funcao
 @app.route('/leiloes', methods=['GET'])
 def leiloes():
     try:
         if (authenticate(request.args['token'])):
-            try:
-                conn = db_connection()
-                conn.set_session(readonly=True)
-                cur = conn.cursor()
-                cur.execute(SELECT_AUCTIONS)
-                auctionsDB = cur.fetchall()
-                conn.commit()
-                cur.close()
-                if auctionsDB == None:
-                    return jsonify([])
-                auctions = []
-                for auction in auctionsDB:
-                    auctions.append({"leilaoId": auction[0], "descricao": auction[1]}) # TODO Aparece ao contrário
-
-                return jsonify(auctions)
-            except:
-                return {"error": "Something went wrong"}
+            return listAllAuctions()
         else:
             return {"error": "Invalid authentication"}
     except:
@@ -532,6 +518,26 @@ def getSenders(auction_ID, cur):
     select_receivers = f""" SELECT auction_user_username from auction where id='{auction_ID}' UNION select auction_user_username from bidding where auction_id='{auction_ID}' UNION select auction_user_username from mural_msg where auction_id='{auction_ID}'; """ 
     cur.execute(select_receivers)
     return [r[0] for r in cur.fetchall()]
+
+
+def listAllAuctions():
+    try:
+        conn = db_connection()
+        conn.set_session(readonly=True)
+        cur = conn.cursor()
+        cur.execute(SELECT_AUCTIONS)
+        auctionsDB = cur.fetchall()
+        conn.commit()
+        cur.close()
+        if auctionsDB == None:
+            return jsonify([])
+        auctions = []
+        for auction in auctionsDB:
+            auctions.append({"leilaoId": auction[0], "descricao": auction[1]}) # TODO Aparece ao contrário
+
+        return jsonify(auctions)
+    except:
+        return {"error": "Something went wrong"}
 
 
 # DB CONNECTION
