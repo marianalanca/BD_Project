@@ -71,9 +71,24 @@ def listAllAuctions(authToken):
     return code_200(req) and type(req.json()) is list
 
 
-def searchAuctions(keyword, authToken):
-    req = requests.put(f'{URL}/leiloes/{keyword}?token={authToken}')
-    return code_200(req) # and contains(req, 'Search Auctions')
+def searchAuctions():
+
+    random_words = ['cama', 'cana', 'bonita', 'velha', 'pesca', 'antiga', 'teste', 'random', 'word', 'dente', 'nada', 'nenhuma']
+    keyword = random.choice(random_words)
+
+    user = random.choice(auths)
+    authToken = user['auth']
+
+    req = requests.get(f'{URL}/leiloes/{keyword}?token={authToken}')
+
+    list_dict = req.json()
+    if code_200(req) and list_dict is not None:
+        if len(list_dict) == 0:
+            passed('NO AUCTION WITH KEYWORD ' + keyword + ' FOUND')
+        else:
+            passed(str(len(list_dict)) + ' AUCTIONS WITH KEYWORD ' + keyword + ' FOUND')
+    else:
+        failed('SEARCH AUCTION FAILED')
 
 
 def searchAuctionDetails(auction_id, authToken):
@@ -355,30 +370,31 @@ def testListMessages():
 # SEARCH AUCTIONS 
 
 def search_auctions():
+    global fail
+    global total
+    global passed_var
     global auths
-
-    random_words = ['cama', 'cana', 'bonita', 'velha', 'pesca', 'antiga', 'teste', 'random', 'word']
+    auc = []
 
     print('-- SEARCH AUCTIONS WITH KEYWORD --')
-    for i in range(10):
-        user = random.choice(auths)
-        keyword = random.choice(random_words)
-        if searchAuctions(keyword, user['auth']):
-            passed('FOUND - ' + keyword)
-        else:
-            failed('NOT FOUND - ' + keyword)
+    for _ in range(20):
+        q = Thread(target=searchAuctions)
+        q.start()
+        auc.append(q)
+    for p in auc:
+        p.join()
+
+    print('-- SEARCH AUCTIONS WITH KEYWORD END --\n')
+
 
     print('-- SEARCH AUCTIONS DETAILS --')
     for i in range(10):
         user = random.choice(auths)
         auction = random.choice(auctions)
-        keyword = random.choice(random_words)
         if searchAuctionDetails(auction['auctionID'], user['auth']):
-            passed('FOUND - ' + keyword)
+            passed('FOUND ' + auction['auctionID'])
         else:
-            failed('NOT FOUND - ' + keyword)
-
-
+            failed('NOT FOUND' + auction['auctionID'])
 if __name__=='__main__':
 
     with open('users_data.json') as json_file:
@@ -390,13 +406,16 @@ if __name__=='__main__':
     
     print('-- TESTING --')
     try :
-        '''testCreateUsers()
+        testCreateUsers()
+        testAuthenticateUsersPASS()
         testAuthenticateUsersPASS()
         testAuthenticateUsersFAIL()
         testListAuctions()
         testBid()
         testSendMenssages()
-        testListMessages()'''
+        testListMessages()
+        
+        testSendMenssages()
     except:
         print('Something went wrong')
 

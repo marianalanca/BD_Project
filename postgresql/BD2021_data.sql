@@ -164,18 +164,28 @@ INSERT INTO auction (title, description, id, bidding, finish_date, auction_user_
 INSERT INTO bidding VALUES (150, '2021-05-24T11:13:16'::timestamp, 'cama 1.0', 'debug');
 INSERT INTO bidding VALUES (160, '2021-05-25T13:56:32'::timestamp, 'cama 1.0', 'debug1');
 
+UPDATE auction SET bidding=160 WHERE id='cama 1.0';
+
 INSERT INTO bidding VALUES (180, '2021-05-15T10:15:00'::timestamp, 'cama 2.0', 'debug5');
+
+UPDATE auction SET bidding=180 WHERE id='cama 2.0';
 
 INSERT INTO bidding VALUES (160, '2021-05-02T12:00:16'::timestamp, 'cana 2.0', 'debug8');
 INSERT INTO bidding VALUES (200, '2021-05-08T13:20:50'::timestamp, 'cana 2.0', 'debug1');
-INSERT INTO bidding VALUES (250, '2021-05-20T16:20:59'::timestamp, 'cana 2.0', 'debug5');
+INSERT INTO bidding VALUES (251, '2021-05-20T16:20:59'::timestamp, 'cana 2.0', 'debug5');
+
+UPDATE auction SET bidding=251 WHERE id='cana 2.0';
 
 INSERT INTO bidding VALUES (1900, '2021-05-21T11:15:36'::timestamp, 'dente dinossauro', 'debug');
 INSERT INTO bidding VALUES (1901, '2021-05-21T11:16:02'::timestamp, 'dente dinossauro', 'debug1');
 
+UPDATE auction SET bidding=1901 WHERE id='dente dinossauro';
+
 INSERT INTO bidding VALUES (150, '2021-05-28T00:00:03'::timestamp, 'escova dentes', 'debug10');
 INSERT INTO bidding VALUES (160, '2021-05-28T01:25:12'::timestamp, 'escova dentes', 'debug8');
-INSERT INTO bidding VALUES (150, '2021-05-28T00:25:25'::timestamp, 'escova dentes', 'debug2');
-INSERT INTO bidding VALUES (160, '2021-05-28T13:10:49'::timestamp, 'escova dentes', 'debug9');
+INSERT INTO bidding VALUES (180, '2021-05-28T00:25:25'::timestamp, 'escova dentes', 'debug2');
+INSERT INTO bidding VALUES (200, '2021-05-28T13:10:49'::timestamp, 'escova dentes', 'debug9');
+
+UPDATE auction SET bidding=200 WHERE id='escova dentes';
 
 INSERT INTO mural_msg VALUES('debug1_escova dentes_2021-05-28T00:00:03', 'Is this toothbrush authentic?', '2021-05-28T00:00:03', 'escova dentes', 'debug1'); 

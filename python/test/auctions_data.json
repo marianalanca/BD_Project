@@ -1,22 +1,22 @@
 [
     {
         "auctionID": "cana 1.0",
-        "minimum": 56445647
+        "minimum": 56450573
     },
     {
         "auctionID": "cana 2.0",
-        "minimum": 106846828
+        "minimum": 106851464
     },
     {
-        "auctionID": "cama",
-        "minimum": 116065369
+        "auctionID": "cama 1.0",
+        "minimum": 116069459
     },
     {
         "auctionID": "cama 2.0",
-        "minimum": 75547313
+        "minimum": 75551913
     },
     {
         "auctionID": "dente dinossauro",
-        "minimum": 97755518
+        "minimum": 97760144
     }
 ]

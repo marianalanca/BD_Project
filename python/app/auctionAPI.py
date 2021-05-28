@@ -1,16 +1,3 @@
-# POSTGRESQL & PSYCOPG2
-# https://www.postgresqltutorial.com/postgresql-python/
-# https://www.postgresql.org/docs/9.2/sql-insert.html
-# https://www.psycopg.org/docs/usage.html
-
-# https://flask.palletsprojects.com/en/1.1.x/quickstart/
-
-# JWT & AUTHENTICATION
-# https://pyjwt.readthedocs.io/en/stable/
-# https://dev.to/aminu_israel/using-json-web-token-jwt-with-python-3n4p
-# https://steelkiwi.com/blog/jwt-authorization-python-part-1-practise/
-
-
 from flask import Flask, request, redirect, jsonify, session
 import psycopg2, logging
 from config import config
@@ -26,14 +13,6 @@ params = config()
 JWT_SECRET = 'secret'
 JWT_ALGORITHM = 'HS256'
 DIV = "\n---------------------------------------------------------------\n"
-
-# SQL COMMANDS
-INSERT_USER = """ INSERT INTO auction_user VALUES (%s, %s) RETURNING username """
-SELECT_AUCTIONS = " SELECT id, description FROM auction "
-SELECT_USERDATA = """ SELECT username, password  FROM auction_user where username=%s"""
-SELECT_USER = """ SELECT username  FROM auction_user where username=%s"""
-INSERT_AUCTION = """ INSERT INTO auction (title, description, id, bidding, finish_date, final_user_username, auction_user_username)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)"""
 
 
 @app.route('/user', methods=['POST', 'PUT'])
@@ -53,7 +32,7 @@ def leilao():
     args = request.get_json()
     if contains(request, 5, 'artigoId', 'precoMinimo', 'titulo' , 'descricao', 'data_de_fim'):
         return createAuction(**args)
-    return {"erro": "Wrong arguments"}
+    return {"error": "Wrong arguments"}
 
 
 # TODO VER
@@ -85,14 +64,12 @@ def leilaoId(leilaoId):
         return {"error": "Invalid authentication"}
 
 
-@app.route('/leiloes/<keyword>', methods=['GET', 'PUT'])
+@app.route('/leiloes/<keyword>', methods=['GET'])
 def leiloesK(keyword):
     try:
         if authenticate(request.args['token']):
             if request.method == 'GET':
                 return search_auctions(keyword)
-            else:
-                return change_auction(keyword)
         else:
             return {"error": "Invalid authentication"}
     except:
@@ -127,7 +104,7 @@ def sendMural(leilaoId):
         if authenticate(request.args['token']):
             if contains(request, 1, 'message'):
                 message = request.get_json()['message']
-                return sendMessageMural(message, leilaoId, decode(request.args['token']))
+                return sendMessageMural(message, leilaoId, decode(request.args['token']), True)
             else: 
                 return {"error": "Wrong arguments"}
         else:
@@ -162,7 +139,10 @@ def match_password(username, password):
     conn = db_connection()
     conn.set_session(readonly=True)
     cur = conn.cursor()
-    cur.execute(SELECT_USERDATA, (username,))
+
+    select_userdata = """ SELECT username, password  FROM auction_user where username=%s"""
+
+    cur.execute(select_userdata, (username,))
     try:
         if password != decode(cur.fetchone()[1]):
             cur.close()
@@ -179,7 +159,9 @@ def find_user(username):
         conn = db_connection()
         conn.set_session(readonly=True)
         cur = conn.cursor()
-        cur.execute(SELECT_USERDATA, (username,))
+
+        select_userdata = """ SELECT username, password  FROM auction_user where username=%s"""
+        cur.execute(select_userdata, (username,))
         return jsonify(cur.fetchone()[1])
     except:
         return {}
@@ -234,20 +216,21 @@ def insertAuctionUser(username, password):
         cur = conn.cursor()
         if (validString(username)):
             passw = encode(password)
-            logger.info(passw)
-            logger.info(len(passw))
-            cur.execute(INSERT_USER, (username, passw,))
+            
+            insert_user = """ INSERT INTO auction_user VALUES (%s, %s) RETURNING username """
+
+            cur.execute(insert_user, (username, passw,))
             new_id = cur.fetchone()[0]
             conn.commit()
             logger.info(f'{DIV}User {new_id} created successfuly\n')
             return {"userId": new_id}
         error_message = 'Username cannot contain special characters'
         logger.error(f'{DIV}{error_message}\n')
-        return {"erro": error_message}
+        return {"error": error_message}
     except Exception as e:
         error = '{m}'.format(m=str(e))
         logger.error(f'{DIV}{error}\n')
-        return {"erro": error}
+        return {"error": error}
     finally:
         cur.close()
 
@@ -264,7 +247,7 @@ def autenticationAuctionUser(username, password):
     except Exception as e:
         error = '{m}'.format(m=str(e))
         logger.error(f'{DIV}{error}\n')
-        return {"erro": error}
+        return {"error": error}
 
 
 def createAuction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
@@ -284,17 +267,19 @@ def createAuction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
         date = datetime.datetime.strptime(data_de_fim, '%d/%m/%Y, %H:%M')  # dia/mes/ano, hora:minuto
         today = datetime.datetime.now()
         if today > date:
-            return {"erro": 'Data incorreta'}  # colocar data default?
+            return {"error": 'Data incorreta'}  # colocar data default?
 
         values = (titulo, descricao, artigoId, precoMinimo, date, None, username)
-        cur.execute(INSERT_AUCTION, values)
+
+        inser_auction = """ INSERT INTO auction (title, description, id, bidding, finish_date, final_user_username, auction_user_username) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+        cur.execute(inser_auction, values)
 
         conn.commit()
         cur.close()
         return {"leilaoId": artigoId}
 
     except Exception as e:
-        return {"erro": '{m}'.format(m=str(e))}
+        return {"error": '{m}'.format(m=str(e))}
 
 
 def changeDetails(leilaoId, definitions):
@@ -353,11 +338,7 @@ def search_auctions(keyword):
             return {"error": 'not found'}
 
     except Exception as e:
-        return {"erro": '{m}'.format(m=str(e))}
-
-
-def change_auction(keyword):
-    return {"fazer": "editar"}
+        return {"error": '{m}'.format(m=str(e))}
 
 
 def consult_auction(leilaoId):
@@ -391,7 +372,7 @@ def consult_auction(leilaoId):
             return {"error": 'not found'}
 
     except Exception as e:
-        return {"erro": '{m}'.format(m=str(e))}
+        return {"error": '{m}'.format(m=str(e))}
 
 
 def activity_auction(username):
@@ -400,30 +381,22 @@ def activity_auction(username):
         conn.set_session(readonly=True)
         cur = conn.cursor()
 
-        command = f"""SELECT id, title, description FROM auction WHERE auction_user_username = '{username}'"""
+        command = f"""SELECT id, title, description FROM auction WHERE auction_user_username = '{username}'
+                        OR id = (SELECT auction_id FROM bidding WHERE auction_user_username = '{username}') 
+                        OR id = (SELECT DISTINCT auction_id FROM mural_msg WHERE auction_user_username = '{username}')"""
         cur.execute(command)
 
         result = cur.fetchall()
 
-        command = f"""SELECT id, title, description FROM auction JOIN bidding on id=auction_id WHERE bidding.auction_user_username = '{username}'"""
-        cur.execute(command)
-
-        aux = cur.fetchall()
-        result.extend(aux)
-
-        command = f"""SELECT id, title, description FROM auction JOIN mural_msg ON id=auction_id WHERE mural_msg.auction_user_username = '{username}'"""
-        cur.execute(command)
-
-        aux = cur.fetchall()
-        result.extend(aux)
-
         if result is not None:
+            conn.commit()
             return jsonify([{"leilaoId": x[0], "title": x[1], "descricao": x[2]} for x in result])
         else:
+            conn.commit()
             return {"error": 'not found'}
 
     except Exception as e:
-        return {"erro": '{m}'.format(m=str(e))}
+        return {"error": '{m}'.format(m=str(e))}
 
 
 def validString(str):
@@ -441,7 +414,7 @@ def bid(auctionID, bidValue, username):
 
         if auction is None or len(auction) == 0:
             logger.error(f'{DIV}Auction ID does not exist')
-            return {"erro": 'Auction ID does not exist'}
+            return {"error": 'Auction ID does not exist'}
 
         bid_date = datetime.datetime.now()
         date = auction[0][1]
@@ -461,11 +434,11 @@ def bid(auctionID, bidValue, username):
                 return {"error": "Bid value is too low"}
         except:
             logger.error('Could not convert price to int')
-            return {"erro": 'Could not convert price to int'}
+            return {"error": 'Could not convert price to int'}
 
         # update bidding value in auction
-        select_auction = """ UPDATE auction SET bidding=%s, final_user_username=%s WHERE id=%s"""
-        cur.execute(select_auction, (bidValue, username, auctionID,))
+        select_auction = """ UPDATE auction SET bidding=%s WHERE id=%s"""
+        cur.execute(select_auction, (bidValue, auctionID,))
 
         # Insert into bidding table
         insert_bidding = """ INSERT INTO bidding VALUES (%s, %s, %s, %s)"""
@@ -478,13 +451,13 @@ def bid(auctionID, bidValue, username):
     except Exception as e:
         error = '{m}'.format(m=str(e))
         logger.error(f'{DIV}{error}')
-        return {"erro": error}
+        return {"error": error}
 
     finally:
         cur.close()
 
 
-def sendMessageMural(message, auction_ID, user):
+def sendMessageMural(message, auction_ID, user, op):
     try:
         conn = db_connection()
         cur = conn.cursor()
@@ -495,9 +468,10 @@ def sendMessageMural(message, auction_ID, user):
 
         cur.execute(insert_message, (f"{user}_{auction_ID}_{msg_time}", message, msg_time, auction_ID, user))
 
-        for receiver in getSenders(auction_ID, cur):
-            if receiver!=user:
-                cur.execute(insert_message, (f"{receiver}_{auction_ID}_{msg_time}", message, msg_time, auction_ID, receiver))
+        if op:
+            for receiver in getSenders(auction_ID, cur):
+                if receiver!=user:
+                    cur.execute(insert_message, (f"{receiver}_{auction_ID}_{msg_time}", message, msg_time, auction_ID, receiver))
 
         conn.commit()
         logger.info(f'{DIV}Message sent successfully')
@@ -505,7 +479,7 @@ def sendMessageMural(message, auction_ID, user):
     except Exception as e:
         error = '{m}'.format(m=str(e))
         logger.error(f'{DIV}{error}')
-        return {"erro": error}
+        return {"error": error}
     finally:
         cur.close()
 
@@ -530,7 +504,7 @@ def messageBox(user):
     except Exception as e:
         error = '{m}'.format(m=str(e))
         logger.error(f'{DIV}{error}')
-        return {"erro": error}
+        return {"error": error}
     finally:
         cur.close()
 
@@ -546,7 +520,10 @@ def listAllAuctions():
         conn = db_connection()
         conn.set_session(readonly=True)
         cur = conn.cursor()
-        cur.execute(SELECT_AUCTIONS)
+
+        select_auctions = """ SELECT id, description FROM auction """
+
+        cur.execute(select_auctions)
         auctionsDB = cur.fetchall()
         conn.commit()
         cur.close()
@@ -562,7 +539,61 @@ def listAllAuctions():
 
 
 def finish():
-    return 
+
+    try:
+        conn = db_connection()
+        cur = conn.cursor()
+
+        select_auctions = """ SELECT id, auction_user_username, bidding FROM auction WHERE final_user_username IS NULL AND finish_date < now() """
+        cur.execute(select_auctions)
+
+        result = cur.fetchall()
+
+        logger.info(f'{DIV}{result}')
+
+        for i in result:
+            id_auction = i[0]
+            seller = i[1]
+            bidding = i[2]
+
+            command = f"""SELECT auction_user_username FROM bidding WHERE price = '{bidding}' AND auction_id = '{id_auction}'"""
+            cur.execute(command)
+
+            user = cur.fetchone()
+            logger.info(f'{DIV}{user}')
+            if user is None:
+                sendMessageMural(f'The {id_auction} auctions has finished but there is no winner', id_auction, seller, False)
+            else:
+                user = user[0]
+
+                logger.info(f'{DIV}{user}')
+
+                # update do final_user_username
+                update_winner = f"""UPDATE auction SET final_user_username='{user}' WHERE id='{id_auction}'"""
+                cur.execute(update_winner)
+
+                
+                logger.info(f'{DIV}{seller}')
+
+                # mensagens
+                sendMessageMural(f'The {id_auction} auctions has finished. You are the winner!', id_auction, user, False)
+                sendMessageMural(f'The {id_auction} auctions has finished. The winner is {user}', id_auction, seller, False)
+        
+        conn.commit()
+        logger.info(f'{DIV}Status: Updated with success ')
+        return jsonify({"Status": "Updated with success"})
+        
+        
+    except Exception as e:
+        error = '{m}'.format(m=str(e))
+        logger.error(f'{DIV}{error}')
+        return {"error": error}
+
+    # buscar todas as auctions que têm winner null
+    # e que já terminaram
+    # envia mensagem
+    # descobre o winner e faz update
+    return
 
 
 # DB CONNECTION
