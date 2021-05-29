@@ -143,7 +143,8 @@ def match_password(username, password):
 
     cur.execute(select_userdata, (username,))
     try:
-        if password != decode(cur.fetchone()[1]):
+        fetched = cur.fetchone()
+        if fetched is not None and len(fetched)!=0 and password != decode(fetched[1]):
             cur.close()
             return False
     except:
@@ -219,7 +220,12 @@ def insertAuctionUser(username, password):
             insert_user = """ INSERT INTO auction_user VALUES (%s, %s) RETURNING username """
 
             cur.execute(insert_user, (username, passw,))
-            new_id = cur.fetchone()[0]
+            fetched = cur.fetchone()
+            if fetched is None or len(fetched)==0:
+                logger.error(f'{DIV}Something went wrong.\n')
+                return {"error": "Something went wrong."}
+
+            new_id = fetched[0]
             conn.commit()
             logger.info(f'{DIV}User {new_id} created successfuly\n')
             return {"userId": new_id}
@@ -349,7 +355,7 @@ def search_auctions(keyword):
 
         result = cur.fetchall()
 
-        if result is not None:
+        if result is not None and len(result) > 0:
             return jsonify([{"leilaoId": x[0], "descricao": x[1]} for x in result])
         else:
             return {"error": 'not found'}
@@ -369,7 +375,7 @@ def consult_auction(leilaoId):
 
         result = cur.fetchall()
 
-        if result is not None:
+        if result is not None and len(result) > 0:
 
             command = f"""SELECT DISTINCT content FROM mural_msg WHERE auction_id = '{leilaoId}' """
             cur.execute(command)
@@ -382,7 +388,7 @@ def consult_auction(leilaoId):
             biddings = cur.fetchall()
 
             dict_result = {"leilaoId": result[0][2], "titulo": result[0][0], "descricao": result[0][1],
-                           "data": result[0][3], "licitacao": result[0][4], "vendedor": result[0][5],
+                           "data": result[0][3], "licitacao": result[0][4], "vendedor": result[0][6],
                            "mensagens": messages, "licitacoes": biddings}
             return jsonify(dict_result)
         else:
@@ -421,14 +427,13 @@ def activity_auction(username):
         set_aux = list(set2 - set1)
         result.extend(set_aux)
 
-        if result is not None:
+        if result is not None and len(result) > 0 :
             return jsonify([{"leilaoId": x[0], "title": x[1], "descricao": x[2]} for x in result])
         else:
             return {"error": 'not found'}
 
     except Exception as e:
         return {"erro": '{m}'.format(m=str(e))}
-
 
 
 def validString(str):
@@ -451,7 +456,6 @@ def bid(auctionID, bidValue, username):
         bid_date = datetime.datetime.now()
         date = auction[0][1]
         
-
         try:
             if bid_date > date:
                 logger.error('The auction has already closed')
@@ -526,8 +530,10 @@ def messageBox(user):
 
         cur.execute(select_message, (user,))
 
+        fetched = cur.fetchall()
+
         messages = []
-        for message in cur.fetchall():
+        for message in fetched:
             messages.append({"Content": message[0], "Date": message[1], "Auction": message[2]})
 
         conn.commit()
@@ -553,13 +559,13 @@ def listAllAuctions():
         conn.set_session(readonly=True)
         cur = conn.cursor()
 
-        select_auctions = """ SELECT id, description FROM auction WHERE finish_date > now()"""
+        select_auctions = """ SELECT id, description FROM auction WHERE finish_date > now() """
 
         cur.execute(select_auctions)
         auctionsDB = cur.fetchall()
         conn.commit()
         cur.close()
-        if auctionsDB == None:
+        if auctionsDB == None or len(auctionsDB) == 0:
             return jsonify([])
         auctions = []
         for auction in auctionsDB:
@@ -576,7 +582,7 @@ def finish():
         conn = db_connection()
         cur = conn.cursor()
 
-        select_auctions = """ SELECT id, auction_user_username, bidding FROM auction WHERE final_user_username IS NULL AND finish_date < now() """
+        select_auctions = """ SELECT FOR UPDATE id, auction_user_username, bidding FROM auction WHERE final_user_username IS NULL AND finish_date < now() """
         cur.execute(select_auctions)
 
         result = cur.fetchall()
