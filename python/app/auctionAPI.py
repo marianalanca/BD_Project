@@ -144,7 +144,7 @@ def match_password(username, password):
     cur.execute(select_userdata, (username,))
     try:
         fetched = cur.fetchone()
-        if fetched is not None and len(fetched)!=0 and password != decode(fetched[1]):
+        if password != decode(fetched[1]):
             cur.close()
             return False
     except:
@@ -174,8 +174,8 @@ def decode(encoded):
 
 
 def encode(value):
-    # 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=90),
     payload = {
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
         'iat': datetime.datetime.utcnow(),
         'sub': value
     }

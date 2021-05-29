@@ -66,11 +66,9 @@ ALTER TABLE mural_msg ADD CONSTRAINT mural_msg_fk2 FOREIGN KEY (auction_user_use
 ALTER TABLE history ADD CONSTRAINT history_fk1 FOREIGN KEY (auction_id) REFERENCES auction(id);
 
 /*INDICES*/
-create index bidding_value on auction (bidding);
 create index auction_aux on auction (id);
 create index user_aux on auction_user (username);
 create index bidding_aux on bidding (auction_id, auction_user_username);
-create index message_aux on mural_msg (auction_id, auction_user_username);
 
 
 /*TRIGGERS*/
