@@ -35,7 +35,6 @@ def leilao():
     return {"error": "Wrong arguments"}
 
 
-# TODO VER
 @app.route('/ativ/', methods=['GET'])
 def ativ():
     try:
@@ -55,7 +54,7 @@ def leilaoId(leilaoId):
                 return consult_auction(leilaoId)
             else:  # PUT
                 if contains(request, 1, 'title') or contains(request, 1, 'description') or contains(request, 2, 'title', 'description'):
-                    return changeDetails(leilaoId, request.get_json())
+                    return changeDetails(leilaoId, request.get_json(), decode(request.args['token']))
                 else:
                     return {"error": "Invalid arguments"}
         else:
@@ -282,15 +281,33 @@ def createAuction(artigoId, precoMinimo, titulo, descricao, data_de_fim):
         return {"error": '{m}'.format(m=str(e))}
 
 
-def changeDetails(leilaoId, definitions):
+def changeDetails(leilaoId, definitions, user):
     if len(definitions) != 0:
         try:
             conn = db_connection()
             cur = conn.cursor()
 
-            select_auction = """ SELECT title, description FROM auction where id=%s"""
+            # fazer select da pessoa que fez a auction
+
+            select_auction = """ SELECT title, description, auction_user_username FROM auction where id=%s"""
             cur.execute(select_auction, (leilaoId,))
-            old_data = cur.fetchall()[0]
+            fetched = cur.fetchall()
+
+            if fetched is None or len(fetched)==0:
+                logger.info(f'{DIV}Auction {leilaoId} does not exist\n')
+                return {"error": f"Auction {leilaoId} does not exist"}
+
+            old_data = fetched[0]
+
+            logger.info(f'{DIV}{old_data}\n')
+
+            creator = old_data[2]
+
+            logger.info(f'{DIV}{creator} {user}\n')
+
+            if creator != user : 
+                logger.info(f'{DIV}<{user}> does not have permission to change auction details\n')
+                return {"error": f"<{user}> does not have permission to change auction details"}
 
             title = old_data[0]
             description = old_data[1]
@@ -381,22 +398,37 @@ def activity_auction(username):
         conn.set_session(readonly=True)
         cur = conn.cursor()
 
-        command = f"""SELECT id, title, description FROM auction WHERE auction_user_username = '{username}'
-                        OR id = (SELECT auction_id FROM bidding WHERE auction_user_username = '{username}') 
-                        OR id = (SELECT DISTINCT auction_id FROM mural_msg WHERE auction_user_username = '{username}')"""
+        command = f"""SELECT id, title, description FROM auction WHERE auction_user_username = '{username}'"""
         cur.execute(command)
 
         result = cur.fetchall()
 
+        command = f"""SELECT DISTINCT id, title, description FROM auction JOIN bidding on id=auction_id WHERE bidding.auction_user_username = '{username}'"""
+        cur.execute(command)
+
+        aux = cur.fetchall()
+        set1 = set(result)
+        set2 = set(aux)
+        set_aux = list(set2 - set1)
+        result.extend(set_aux)
+
+        command = f"""SELECT DISTINCT auction.id, title, description FROM auction JOIN mural_msg ON auction.id=auction_id WHERE mural_msg.auction_user_username = '{username}'"""
+        cur.execute(command)
+
+        aux = cur.fetchall()
+        set1 = set(result)
+        set2 = set(aux)
+        set_aux = list(set2 - set1)
+        result.extend(set_aux)
+
         if result is not None:
-            conn.commit()
             return jsonify([{"leilaoId": x[0], "title": x[1], "descricao": x[2]} for x in result])
         else:
-            conn.commit()
             return {"error": 'not found'}
 
     except Exception as e:
-        return {"error": '{m}'.format(m=str(e))}
+        return {"erro": '{m}'.format(m=str(e))}
+
 
 
 def validString(str):
@@ -521,7 +553,7 @@ def listAllAuctions():
         conn.set_session(readonly=True)
         cur = conn.cursor()
 
-        select_auctions = """ SELECT id, description FROM auction """
+        select_auctions = """ SELECT id, description FROM auction WHERE finish_date > now()"""
 
         cur.execute(select_auctions)
         auctionsDB = cur.fetchall()

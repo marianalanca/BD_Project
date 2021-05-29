@@ -91,9 +91,25 @@ def searchAuctions():
         failed('SEARCH AUCTION FAILED')
 
 
-def searchAuctionDetails(auction_id, authToken):
+def searchAuctionDetails():
+
+    user = random.choice(auths)
+    authToken = user['auth']
+
+    auction = random.choice(auctions)
+    auction_id = auction['auctionID']
+
     req = requests.get(f'{URL}/leilao/{auction_id}?token={authToken}')
-    return code_200(req) # and contains(req, 'Auction Details')
+
+    list_dict = req.json()
+    if code_200(req) and list_dict is not None:
+        print(list_dict)
+        if len(list_dict) == 0:
+            passed('NO AUCTION FOUND')
+        else:
+            passed('AUCTION ' + auction_id + ' FOUND')
+    else:
+        failed('SEARCH AUCTION FAILED')
 
 def activity(authToken):
     req = requests.get(f'{URL}/ativ/?token={authToken}')
@@ -388,13 +404,15 @@ def search_auctions():
 
 
     print('-- SEARCH AUCTIONS DETAILS --')
-    for i in range(10):
-        user = random.choice(auths)
-        auction = random.choice(auctions)
-        if searchAuctionDetails(auction['auctionID'], user['auth']):
-            passed('FOUND ' + auction['auctionID'])
-        else:
-            failed('NOT FOUND' + auction['auctionID'])
+    for _ in range(20):
+        q = Thread(target=searchAuctionDetails)
+        q.start()
+        auc.append(q)
+    for p in auc:
+        p.join()
+
+    print('-- SEARCH AUCTIONS DETAILS END --\n')
+
 if __name__=='__main__':
 
     with open('users_data.json') as json_file:
@@ -416,6 +434,7 @@ if __name__=='__main__':
         testListMessages()
         
         testSendMenssages()
+        search_auctions()
     except:
         print('Something went wrong')
 
