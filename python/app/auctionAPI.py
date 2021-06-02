@@ -123,6 +123,17 @@ def message():
         return {"error": "Invalid authentication"}
 
 
+@app.route('/history/<auctionID>', methods=['GET'])
+def historyEndpoint(auctionID):
+    try:
+        if (authenticate(request.args['token'])):
+            return consultHistory(auctionID)
+        else:
+            return {"error": "Invalid authentication"}
+    except:
+        return {"error": "Invalid authentication"}
+
+
 @app.route('/finish', methods=['GET'])
 def finishEndpoint():
     try:
@@ -215,7 +226,15 @@ def insertAuctionUser(username, password):
         # create a cursor
         cur = conn.cursor()
         if (validString(username)):
-            passw = encode(password)
+            payload = {
+                'iat': datetime.datetime.utcnow(),
+                'sub': password
+            }
+            passw =  jwt.encode(
+                payload,
+                JWT_SECRET,
+                algorithm=JWT_ALGORITHM
+            )
             
             insert_user = """ INSERT INTO auction_user VALUES (%s, %s) RETURNING username """
 
@@ -344,6 +363,40 @@ def changeDetails(leilaoId, definitions, user):
         return {"error": "Lack of arguments"}
 
 
+def consultHistory(auctionId):
+    try:
+        history_register = []
+
+        conn = db_connection()
+        conn.set_session(readonly=True)
+        cur = conn.cursor()
+
+        select_history = """ SELECT change_date, old_title, old_description FROM history where auction_id=%s"""
+        cur.execute(select_history, (auctionId,))
+        fetched = cur.fetchall()
+
+        if fetched is None or len(fetched)==0:
+            logger.info(f'{DIV}There were no modifications done to auction {auctionId}\n')
+            return {"error": f"There were no modifications done to auction {auctionId}"}
+
+        for _ in fetched:
+            change_date = fetched[0][0]
+            old_title = fetched[0][1]
+            old_description = fetched[0][1]
+            history_register.append({"Title":old_title, "old_description": old_description, "updated": change_date})
+
+        conn.commit()
+        return jsonify(history_register)
+
+    except Exception as e:
+        error = '{m}'.format(m=str(e))
+        logger.error(f'{DIV}{error}\n')
+        return {"error": error}
+    finally:
+        cur.close()
+
+
+
 def search_auctions(keyword):
     try:
         conn = db_connection()
@@ -388,7 +441,7 @@ def consult_auction(leilaoId):
             biddings = cur.fetchall()
 
             dict_result = {"leilaoId": result[0][2], "titulo": result[0][0], "descricao": result[0][1],
-                           "data": result[0][3], "licitacao": result[0][4], "vendedor": result[0][6],
+                           "data": result[0][3], "licitacao": result[0][4], "vencedor": result[0][5], "vendedor": result[0][6],
                            "mensagens": messages, "licitacoes": biddings}
             return jsonify(dict_result)
         else:
